@@ -72,7 +72,7 @@ public class CentralController {
     }
     
     // Find
-    @GetMapping("/findlogin/{token}{email}")
+    @GetMapping("/findlogin/{token}&{email}")
     public Login findlogin(@PathVariable String token, @PathVariable String email) {
     	processaLogin(token);
     	Login login = loginRepo.findByEmail(email);
