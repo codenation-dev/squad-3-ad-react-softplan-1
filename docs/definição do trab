@@ -1,0 +1,42 @@
+escopo
+Frontend
+	deve implementar as funcionalidades apresentadas nos wireframes
+	deve ser acessada adequadamente tanto por navegadores desktop quanto mobile
+	deve consumir a API do produto
+	desenvolvida na forma de uma Single Page Application
+
+login		- marcelo
+	email
+	pwd
+	esqueci a senha: a ideia é enviar um email.
+	backend envia email se tiver cadastrado, senão devevo erro.
+	autenticação de dois fatores
+	
+cadastro	- Jerson
+	email
+	foto
+	pwd
+	confirma pwd
+	extras:
+	nome
+	fone
+	
+	ver a possibilidade de implemtar wizard
+
+consulta	 - jaquiel
+	mostrar o token
+	filtros:	Tipo(Produção, Homologação, Dev)
+	Ordenação:	Tipo e Frequencia(Eventos)
+	Buscar por:	Tipo, Descrição, Origem
+	Arquivar
+	Apagar
+	Mostra o resultado em uma tabela
+	Opção para ver o detalhe do registro
+	Implemenatr paginação
+	
+perfil		- cleverson
+	
+	
+estudar:	adobe xd
+			figma.com
+	
