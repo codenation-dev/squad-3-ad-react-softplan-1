@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { IconButton, MenuItem, Menu } from '@material-ui/core';
+import { IconButton,  Menu } from '@material-ui/core';
 import { AccountCircle } from '@material-ui/icons';
 
 import Header from '../Header';
