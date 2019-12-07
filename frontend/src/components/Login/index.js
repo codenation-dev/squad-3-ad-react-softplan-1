@@ -1,7 +1,9 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { AppBar, Toolbar, IconButton, Typography, Button } from '@material-ui/core';
+import { Button } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 
+import Header from '../Header';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -12,22 +14,19 @@ const useStyles = makeStyles(theme => ({
     },
   }));
 
-
-export default function Login() {
+export default function Login(props) {
     const classes = useStyles();
 
+    const handleLoginClick = () => <Link to="/List"></Link>
+  
     return (
       <div className={classes.root}>
-        <AppBar position="static">
-          <Toolbar>
-            <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-            </IconButton>
-            <Typography variant="h6" className={classes.title}>
-              Central de Erros
-            </Typography>
-            <Button color="inherit">Login</Button>
-          </Toolbar>
-        </AppBar>
+        <Header>
+            <Button color="inherit" onClick={handleLoginClick}>
+              Login
+              {props.chldren}
+            </Button>
+        </Header>
       </div>
     );
 }
