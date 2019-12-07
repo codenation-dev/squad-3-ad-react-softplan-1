@@ -9,15 +9,15 @@ export default function Routes() {
     return(
 
         <div className="Routes">
-            <Switch>   
+        <Switch>   
 
-           <Route exact path="/" component={() =><h1>Index</h1>} />
+           <Route exact path="/" component={Login} />
            <Route path="/Login" component={Login} />
            <Route path="/List" component={List} />
 
            <Route path="*" compoonent={() => <h1>404 Page Not Found</h1>} />
-    </Switch>
-    </div>
+        </Switch>
+        </div>
 
     );
 }
