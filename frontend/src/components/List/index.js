@@ -1,10 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-<<<<<<< HEAD
-import { IconButton } from '@material-ui/core';
-=======
-import { IconButton, MenuItem, Menu } from '@material-ui/core';
->>>>>>> 2513c9d73350281792386357e9aae839a2bb50a5
+import { IconButton,  Menu } from '@material-ui/core';
 import { AccountCircle } from '@material-ui/icons';
 
 import Header from '../Header';
