@@ -12,8 +12,8 @@ export default function Routes() {
         <Switch>   
 
            <Route exact path="/" component={Login} />
-           <Route path="/Login" component={Login} />
-           <Route path="/List" component={List} />
+           <Route path="/login" component={Login} />
+           <Route path="/list" component={List} />
 
            <Route path="*" compoonent={() => <h1>404 Page Not Found</h1>} />
         </Switch>
