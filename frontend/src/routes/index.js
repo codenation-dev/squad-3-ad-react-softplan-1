@@ -1,8 +1,12 @@
 import React from "react";
-import { Switch, Route } from "react-router-dom";
+import { Switch } from "react-router-dom";
+import Route from "./Route";
+
 import SignIn from "../pages/SignIn";
 import SignUp from "../pages/SignUp";
-import List from "../components/List";
+import Profile from "../pages/Profile";
+
+import { Dashboard } from "@material-ui/icons";
 
 export default function Routes() {
   return (
@@ -10,11 +14,8 @@ export default function Routes() {
       <Switch>
         <Route exact path="/" component={SignIn} />
         <Route path="/register" component={SignUp} />
-        {/* Comentei as duas porque criei tanto rotas para dashboard que seria os logs etc
-           e também o profile que é o perfil da parada */}
-        {/* <Route path="/dashboard" component={SignUp} />
-           <Route path="/profile" component={SignUp} /> */}
-        <Route path="/list" component={List} />
+        <Route path="/dashboard" component={Dashboard} isPrivate />
+        <Route path="/profile" component={Profile} isPrivate />
 
         <Route path="*" compoonent={() => <h1>404 Page Not Found</h1>} />
       </Switch>
