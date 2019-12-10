@@ -5,8 +5,7 @@ import Route from "./Route";
 import SignIn from "../pages/SignIn";
 import SignUp from "../pages/SignUp";
 import Profile from "../pages/Profile";
-
-import { Dashboard } from "@material-ui/icons";
+import Dashboard from "../pages/Dashboard";
 
 export default function Routes() {
   return (
@@ -17,7 +16,7 @@ export default function Routes() {
         <Route path="/dashboard" component={Dashboard} isPrivate />
         <Route path="/profile" component={Profile} isPrivate />
 
-        <Route path="*" compoonent={() => <h1>404 Page Not Found</h1>} />
+        <Route path="*" component={<h1>404 Page Not Found</h1>} />
       </Switch>
     </div>
   );
