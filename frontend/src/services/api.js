@@ -1,15 +1,15 @@
 //////////////////////////////////////////////////////
-//Documentação dos endpoints
+//Documentaï¿½ï¿½o dos endpoints
 //https://github.com/cpohlod/centralerros
 //////////////////////////////////////////////////////
 
 import axios from 'axios';
-//import {browserHistory} from  'react-router';
+import { browserHistory } from  'react-router';
 
 const API = axios.create({ baseURL : 'https://centralerros.herokuapp.com' })
 
   const getUsers = async ({token}) => {
-    const { data } = await API.get(`/logins/token=${token}`);
+    const { data } = await API.get(`/logins/${token}`);
     return data;
   };
 
@@ -38,7 +38,7 @@ const API = axios.create({ baseURL : 'https://centralerros.herokuapp.com' })
             //browserHistory.push('/list');
             // console.log("Token: " + token)
             // console.log(history)
-            history.push('/dashboard'); //não redireciona para o dashboard, o Marcelo deve saber pq
+            history.push('/dashboard'); //nï¿½o redireciona para o dashboard, o Marcelo deve saber pq
         })
         .catch(error => {
             //console.log(error.message);
@@ -49,7 +49,8 @@ const API = axios.create({ baseURL : 'https://centralerros.herokuapp.com' })
   };
 
   const getLogs = async ({ token }) => {
-    const { data } = await API.get(`/logs/token=${token}`);
+    //const { data } = await API.get(`/logs/${token}`);
+    const { data } = await API.get(`/logs/834463a1513858d7b2d2db1ecb99307045712fbd9474dfd78cf78b29db00e90b`);
     return data;
   };
 
@@ -69,11 +70,11 @@ const API = axios.create({ baseURL : 'https://centralerros.herokuapp.com' })
     fetch(`https://centralerros.herokuapp.com/savelogin`,requestInfo)
         .then(response => {
             if(response.ok) {
-                console.log("usuário cadastrado com sucesso");
+                console.log("usuï¿½rio cadastrado com sucesso");
                 return response.text();
             } else {
-                console.log("não foi possí­vel salvar o novo usuário");
-                throw new Error('não foi possí­vel salvar o novo usuário');
+                console.log("nï¿½o foi possï¿½vel salvar o novo usuï¿½rio");
+                throw new Error('nï¿½o foi possï¿½vel salvar o novo usuï¿½rio');
             }
         })
         .then(token => {
