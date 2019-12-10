@@ -11,7 +11,7 @@ export default function RouteWrapper({
   ...rest
 }) {
   //logado ou não só para testes.
-  const signed = true;
+  const signed = false;
 
   if (!signed && isPrivate) {
     return <Redirect to="/" />;
