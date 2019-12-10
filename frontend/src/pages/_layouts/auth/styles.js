@@ -19,6 +19,7 @@ export const Content = styled.div`
     display: flex;
     flex-direction: column;
     margin-top: 30px;
+    margin-bottom: 30px;  
   }
 
   input {
