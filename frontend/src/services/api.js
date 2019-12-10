@@ -1,10 +1,10 @@
 import axios from 'axios';
-import {browserHistory} from  'react-router';
+import { browserHistory } from  'react-router';
 
 const API = axios.create({ baseURL : 'https://centralerros.herokuapp.com' })
 
   const getUsers = async ({token}) => {
-    const { data } = await API.get(`/logins/token=${token}`);
+    const { data } = await API.get(`/logins/${token}`);
     return data;
   };
 
@@ -39,7 +39,8 @@ const API = axios.create({ baseURL : 'https://centralerros.herokuapp.com' })
   };
 
   const getLogs = async ({ token }) => {
-    const { data } = await API.get(`/logs/token=${token}`);
+    //const { data } = await API.get(`/logs/${token}`);
+    const { data } = await API.get(`/logs/834463a1513858d7b2d2db1ecb99307045712fbd9474dfd78cf78b29db00e90b`);
     return data;
   };
   
