@@ -13,6 +13,7 @@ export default function RouteWrapper({
   ...rest
 }) {
   //logado ou não só para testes.
+
   const { signed } = store.getState().auth;
 
   if (!signed && isPrivate) {
