@@ -1,13 +1,13 @@
 import { takeLatest, call, put, all } from "redux-saga/effects";
 
 import history from "../../../services/history";
-import api from "../../../services/api";
+import { login } from "../../../services/api";
 import { signInSuccess } from "./actions";
 
 export function* signIn({ payload }) {
   const { email, password } = payload;
 
-  const response = yield call(api.post, "login", {
+  const response = yield call(login.post, "login", {
     email,
     password
   });
