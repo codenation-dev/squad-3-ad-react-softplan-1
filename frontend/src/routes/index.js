@@ -7,7 +7,7 @@ import SignUp from "../pages/SignUp";
 import Profile from "../pages/Profile";
 import List from "../pages/List";
 
-import { Dashboard } from "@material-ui/icons";
+import Dashboard from "../pages/Dashboard";
 
 export default function Routes() {
   return (
