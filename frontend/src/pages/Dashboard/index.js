@@ -1,4 +1,5 @@
 import React from "react";
+import GridView from "../../components/GridView";
 
 const Dashboard = (props) => {
 
@@ -8,10 +9,15 @@ const Dashboard = (props) => {
   }
 
   return (
-    <div>
+    <React.Fragment>
+    <div className="dashboard">
       <h1>Dashboard</h1>
       <button onClick={handleSair}>Sair</button>
     </div>
+    <div className=""> 
+      <GridView />
+    </div>
+    </React.Fragment>
   )
 }
 
