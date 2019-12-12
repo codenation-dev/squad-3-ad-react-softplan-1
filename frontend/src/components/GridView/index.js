@@ -6,6 +6,9 @@ import Search from '../Search';
 
 export default function GridView() {
 
+  const columns = {};
+  const data = {};
+
   return (
      
     <React.Fragment>
@@ -13,7 +16,7 @@ export default function GridView() {
       <Button label={'Apagar'} />
       <SelectOption />
       <Search />
-      <Datatable />
+      <Datatable columns={columns} items={data} />
     </React.Fragment>
   )
 
