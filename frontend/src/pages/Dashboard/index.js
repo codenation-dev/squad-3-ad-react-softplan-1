@@ -1,9 +1,17 @@
 import React from "react";
 
+const Dashboard = (props) => {
 
-const Dashboard = () => {
+  const handleSair = () => {
+    localStorage.removeItem("central-erros-auth-token");
+    props.history.push("/");
+  }
+
   return (
-    <h1>Dashboard</h1>
+    <div>
+      <h1>Dashboard</h1>
+      <button onClick={handleSair}>Sair</button>
+    </div>
   )
 }
 

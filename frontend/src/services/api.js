@@ -1,5 +1,5 @@
 import axios from "axios";
-import { createBrowserHistory } from "history";
+//import { createBrowserHistory } from "history";
 
 const API = axios.create({ baseURL: "https://centralerros.herokuapp.com" });
 
@@ -8,10 +8,10 @@ const getUsers = async ({ token }) => {
   return data;
 };
 
-const login = async ({ email, pwd }) => {
+const login = async ( history, email, pwd ) => {
   const requestInfo = {
     method: "POST",
-    body: JSON.stringify({ login: email, senha: pwd }),
+    body: JSON.stringify({ email: email, pwd: pwd }),
     headers: {
       "Content-Type": "application/json",
       "Access-Control-Allow-Origin": "*"
@@ -29,10 +29,10 @@ const login = async ({ email, pwd }) => {
     })
     .then(token => {
       localStorage.setItem("central-erros-auth-token", token);
-      createBrowserHistory.push("/list");
+      history.push("/dashboard");
     })
     .catch(error => {
-      this.setState({ msg: error.message });
+      alert(error.message);
     });
 };
 
@@ -43,36 +43,33 @@ const getLogs = async ({ token }) => {
 
 const register = async (history, name, email, pwd) => {
   const requestInfo = {
-      method:'POST',
-      body:JSON.stringify({name:name,
-                           email:email,
-                           pwd:pwd}),
-      headers:{
-          'Content-Type' : 'application/json',
-          'Access-Control-Allow-Origin' : '*',
-      }
+    method: "POST",
+    body: JSON.stringify({ name: name, email: email, pwd: pwd }),
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*"
+    }
   };
 
-  fetch(`https://centralerros.herokuapp.com/savelogin`,requestInfo)
-      .then(response => {
-          if(response.ok) {
-              console.log("usuário cadastrado com sucesso");
-              return response.text();
-          } else {
-              console.log("não foi possível salvar o novo usuário");
-              throw new Error('não foi possível salvar o novo usuário');
-          }
-      })
-      .then(token => {
-          //browserHistory.push('/');
-          //console.log(history)
-          history.push('/');
-      })
-      .catch(error => {
-          //console.log(error.message);
-          alert(error.message);
-      });
-
-};  
+  fetch(`https://centralerros.herokuapp.com/savelogin`, requestInfo)
+    .then(response => {
+      if (response.ok) {
+        console.log("usuário cadastrado com sucesso");
+        return response.text();
+      } else {
+        console.log("não foi possível salvar o novo usuário");
+        throw new Error("não foi possível salvar o novo usuário");
+      }
+    })
+    .then(token => {
+      //browserHistory.push('/');
+      //console.log(history)
+      history.push("/");
+    })
+    .catch(error => {
+      //console.log(error.message);
+      alert(error.message);
+    });
+};
 
 export { login, getUsers, getLogs, register };
