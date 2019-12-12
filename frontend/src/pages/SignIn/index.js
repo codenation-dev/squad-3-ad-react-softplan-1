@@ -1,11 +1,11 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+//import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { Form, Input } from "@rocketseat/unform";
 import * as Yup from "yup";
+import { login } from '../../services/api.js'
 
-
-import { signInRequest } from "../../store/modules/auth/actions";
+//import { signInRequest } from "../../store/modules/auth/actions";
 // Sugestão para o signUp, copiar esse esquema e apenas adicionar o nome e a linha que vou deixar.
 const schema = Yup.object().shape({
   email: Yup.string()
@@ -15,11 +15,11 @@ const schema = Yup.object().shape({
   // no singup pode por .min(6, 'a senha deve conter no minimo seis dígitos.')
 });
 
-export default function SignIn() {
-  const dispatch = useDispatch();
+export default function SignIn(props) {
+//  const dispatch = useDispatch();
 
   function handleSubmit({ email, password }) {
-    dispatch(signInRequest(email, password));
+    login(props.history, email, password);
   }
   return (
     <>

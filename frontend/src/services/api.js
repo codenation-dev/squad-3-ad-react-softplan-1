@@ -1,5 +1,5 @@
 import axios from "axios";
-import { createBrowserHistory } from "history";
+//import { createBrowserHistory } from "history";
 
 const API = axios.create({ baseURL: "https://centralerros.herokuapp.com" });
 
@@ -8,10 +8,10 @@ const getUsers = async ({ token }) => {
   return data;
 };
 
-const login = async ({ email, pwd }) => {
+const login = async ( history, email, pwd ) => {
   const requestInfo = {
     method: "POST",
-    body: JSON.stringify({ login: email, senha: pwd }),
+    body: JSON.stringify({ email: email, pwd: pwd }),
     headers: {
       "Content-Type": "application/json",
       "Access-Control-Allow-Origin": "*"
@@ -29,10 +29,10 @@ const login = async ({ email, pwd }) => {
     })
     .then(token => {
       localStorage.setItem("central-erros-auth-token", token);
-      createBrowserHistory.push("/list");
+      history.push("/dashboard");
     })
     .catch(error => {
-      this.setState({ msg: error.message });
+      alert(error.message);
     });
 };
 
