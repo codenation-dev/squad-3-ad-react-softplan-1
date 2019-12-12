@@ -5,16 +5,16 @@ import { login } from "../../../services/api";
 import { signInSuccess } from "./actions";
 
 export function* signIn({ payload }) {
-  const { email, password } = payload;
+  const { email, pwd } = payload;
 
   const response = yield call(login.post, "login", {
     email,
-    password
+    pwd
   });
 
-  const { token, user } = response.data;
+  const { token } = response.data;
   //promisse
-  yield put(signInSuccess(token, user));
+  yield put(signInSuccess(token));
 
   history.push("/dashboard");
 }
