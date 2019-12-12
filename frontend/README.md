@@ -1,3 +1,7 @@
+[Quadro Trello](https://trello.com/b/SkF8l5BQ/codenationreactsquad3)
+[Codigo backend novo repositório](https://github.com/cpohlod/centralerros)
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
