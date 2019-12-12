@@ -19,6 +19,7 @@ html, body, #root {
 }
 
 body {
+  min-height: 100vh;
   -webkit-font-smoothing: antialiased;
 }
 body, input , button {
