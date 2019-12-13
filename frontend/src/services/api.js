@@ -1,10 +1,9 @@
 import axios from "axios";
-//import { createBrowserHistory } from "history";
 
 const API = axios.create({ baseURL: "https://centralerros.herokuapp.com" });
 
 const getUsers = async ({ token }) => {
-  const { data } = await API.get(`/logins/token=${token}`);
+  const { data } = await API.get(`/logins/${token}`);
   return data;
 };
 
@@ -37,7 +36,8 @@ const login = async ( history, email, pwd ) => {
 };
 
 const getLogs = async ({ token }) => {
-  const { data } = await API.get(`/logs/token=${token}`);
+  const { data } = await API.get(`/logs/${token}`);
+  console.log(token);
   return data;
 };
 

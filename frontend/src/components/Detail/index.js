@@ -1,21 +1,12 @@
 import React from 'react';
 
-export default function Detail() {
+export default function Detail(props) {
     
     return(
         <div className="detail" >
             <dl>
-                <dt>ITem Título</dt>
-                <dd>ITem descricao</dd>
-
-                <dt>ITem Título</dt>
-                <dd>ITem descricao</dd>
-
-                <dt>ITem Título</dt>
-                <dd>ITem descricao</dd>
-
-                <dt>ITem Título</dt>
-                <dd>ITem descricao</dd>  
+                <dt>{props.title}</dt>
+                <dd>{props.descricao}</dd>
             <dl/>
         </div>
     )

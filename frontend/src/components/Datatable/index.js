@@ -1,17 +1,18 @@
 import React , { useState } from 'react';
 
+
 export default function DataTable(props) {
 
-  const [columns, setColumns] = useState({});
-  const [items, setItems] = useState({});
+  const [columns, setColumns] = useState([]);
+  const [items, setItems] = useState([]);
+
 
 
   const handleSelectItem = id => { }
 
 
-    const cols = (props) => { 
-      setColumns(props.columns);
-      return columns.state.map(column  => <th>{column}</th> );
+    const cols = () => { 
+     columns.state.map(column  => <th><p>mmm</p>{column}</th> );
     }
 
     const its = (props) => {
@@ -21,7 +22,7 @@ export default function DataTable(props) {
       return items.state.map(item => (
                                         <tr key={item.id}>
                                           <td>             
-                                            <input type="checkbox" id="scales" name="scales" checked> </input>
+                                            <input type="checkbox" checked> </input>
                                           </td>
                                           <td>{item.level}</td>
                                           <td>{item.log}</td>
@@ -39,7 +40,7 @@ export default function DataTable(props) {
           </tr> 
         </thead>
         <tbody className="table-body">
-          {its}
+          {items}
         </tbody>
       </div>
     )
