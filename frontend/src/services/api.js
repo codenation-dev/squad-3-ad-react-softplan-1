@@ -1,22 +1,15 @@
 import axios from "axios";
 
-const API = axios.create({ baseURL: "https://centralerros.herokuapp.com" });
-
-const getUsers = async ({ token }) => {
-  const { data } = await API.get(`/logins/${token}`);
-  return data;
-};
-
 const login = async ( history, email, pwd ) => {
   const requestInfo = {
     method: "POST",
-    body: JSON.stringify({ email: email, pwd: pwd }),
+    body: JSON.stringify({ email, pwd }),
     headers: {
       "Content-Type": "application/json",
       "Access-Control-Allow-Origin": "*"
     }
   };
-  fetch(`https://centralerros.herokuapp.com/login`, requestInfo)
+  fetch("http://localhost:8090/login", requestInfo)
     .then(response => {
       if (response.ok) {
         console.log("login ok");
@@ -27,18 +20,13 @@ const login = async ( history, email, pwd ) => {
       }
     })
     .then(token => {
+      console.log("login ok - "+token);
       localStorage.setItem("central-erros-auth-token", token);
       history.push("/dashboard");
     })
     .catch(error => {
       alert(error.message);
     });
-};
-
-const getLogs = async ({ token }) => {
-  const { data } = await API.get(`/logs/${token}`);
-  console.log(token);
-  return data;
 };
 
 const register = async (history, name, email, pwd) => {
@@ -51,7 +39,7 @@ const register = async (history, name, email, pwd) => {
     }
   };
 
-  fetch(`https://centralerros.herokuapp.com/savelogin`, requestInfo)
+  fetch("http://localhost:8090/savelogin", requestInfo)
     .then(response => {
       if (response.ok) {
         console.log("usuário cadastrado com sucesso");
@@ -62,14 +50,31 @@ const register = async (history, name, email, pwd) => {
       }
     })
     .then(token => {
-      //browserHistory.push('/');
-      //console.log(history)
       history.push("/");
     })
     .catch(error => {
-      //console.log(error.message);
+      console.log(error.message);
       alert(error.message);
     });
 };
 
-export { login, getUsers, getLogs, register };
+const getLogs = async () => {
+  const token = localStorage.getItem("central-erros-auth-token");
+  console.log("getLogs token:"+token);
+  fetch(`http://localhost:8090/buscalogs/${token}`)
+        .then(response => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            throw new Error("não foi possível salvar o novo usuário");
+          }
+        })
+        .then(logs => {
+          return logs;
+        })
+        .catch(error => {
+          console.log(error.message);
+        });
+};
+
+export { register, login, getLogs};

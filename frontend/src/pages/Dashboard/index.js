@@ -1,8 +1,7 @@
 import React from "react";
 import GridView from "../../components/GridView";
-import Button from "../../components/Button";
 
-const Dashboard = (props) => {
+export default function Dashboard(props) {
 
   const handleSair = () => {
     localStorage.removeItem("central-erros-auth-token");
@@ -11,14 +10,12 @@ const Dashboard = (props) => {
 
   return (
     <React.Fragment>
-    <div className="dashboard">
-      <Button label={'Sair'}  onClick={handleSair} />
-    <div className="gridview"> 
-      <GridView />
-    </div>
-    </div>
+      <div className="dashboard">
+        <button onClick={handleSair}>Sair</button>     
+      </div>
+      <div> 
+        <GridView />
+      </div>    
     </React.Fragment>
-  )
+  );
 }
-
-export default Dashboard;

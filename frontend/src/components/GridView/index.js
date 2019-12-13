@@ -1,44 +1,65 @@
-import React , { useEffect } from 'react'
-import Datatable from '../Datatable';
-import Button from '../Button';
-import SelectOption from '../SelectOption';
-import Search from '../Search';
-import { getLogs } from '../../services/api.js'
+import React , { Component } from 'react'
+import { Link } from 'react-router-dom';
 
-export default function GridView() {
-
-  const options = [ 
-                    { type: ['Produção','Homologação','Dev'] },
-                    { ordencao: ['Ordenar Por','Level','Frequência'] },
-                    { busca: ['Buscar Por','Level','Descrição','Origem'] },
-                  ]
-
-  const columns = {};
-  const data = {};
-
-  const getItems = () => {
-    getLogs()
-      //.then(items => setColumns(items))
-      .catch(error => console.log(error));
+class GridView extends Component {
+  state = {
+    items:[]
   };
 
-  useEffect(() => {
-    console.log(getItems(localStorage.getItem("central-erros-auth-token")))
-  });
+  componentDidMount() {
+    console.log("componentDidMount");
+    this.load();
+  }
 
-  return (
-     
-    <React.Fragment>
-      <div className="gridview" >
-        <Button label={'Arquivar'} />
-        <Button label={'Apagar'} />
-        <SelectOption options={options}/>
-        <SelectOption />
-        <SelectOption />
-        <Search />
-        <Datatable columns={columns} items={getItems} />
+  load = async () => {
+    const token = localStorage.getItem("central-erros-auth-token");
+    console.log("getLogs token:"+token);
+    fetch(`http://localhost:8090/buscalogs/${token}`)
+          .then(response => {
+            if (response.ok) {
+              return response.json();
+            } else {
+              throw new Error("não foi possível salvar o novo usuário");
+            }
+          })
+          .then(logs => {
+            console.log(logs.length);
+            this.setState({items: logs});
+          })
+          .catch(error => {
+            console.log(error.message);
+            this.setState({items: []});            
+          });
+  };
+
+  render() {
+    const { items } = this.state;
+    return (
+      <div>
+        <h1>Forum</h1>
+        <table>
+          <thead>
+            <tr>
+              <td>Level</td>
+              <td>Log</td>
+              <td>Eventos</td>
+            </tr>
+          </thead>
+          <tbody>
+            {
+                items.map(item=>(
+                  <tr key={item.id}>
+                    <td>{item.type}</td>
+                    <td>{item.title}</td>
+                    <td>{item.quantity}</td>
+                    <Link data-test="link" to={`/detail:${item.id}`}>Detalhe</Link>
+                  </tr>
+                ))
+            }
+          </tbody>
+        </table>
       </div>
-    </React.Fragment>
-  )
-
+      );
+    }
 }
+export default GridView;
