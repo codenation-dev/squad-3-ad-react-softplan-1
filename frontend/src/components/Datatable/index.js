@@ -18,16 +18,17 @@ export default function DataTable(props) {
 
       setItems(props.items);
 
-      return items.state.map(item => {
-          <tr key={item.id}>
-            <td>             
-              <input type="checkbox" id="scales" name="scales" checked> </input>
-            </td>
-            <td>{item.level}</td>
-            <td>{item.log}</td>
-            <td>{item.eventos}</td>
-          </tr>
-      }
+      return items.state.map(item => (
+                                        <tr key={item.id}>
+                                          <td>             
+                                            <input type="checkbox" id="scales" name="scales" checked> </input>
+                                          </td>
+                                          <td>{item.level}</td>
+                                          <td>{item.log}</td>
+                                          <td>{item.eventos}</td>
+                                        </tr>
+                                        )
+                              )
     }
 
     return (
