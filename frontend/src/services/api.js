@@ -36,8 +36,11 @@ const login = async ( history, email, pwd ) => {
 };
 
 const getLogs = async ({ token }) => {
-  const { data } = await API.get(`/logs/${token}`);
+  //const { data } = await API.get(`/logs/${token}`).response.json();
   console.log(token);
+  let response = await fetch(`https://api.github.com/users/jaquiel`);
+  let data = await response.json()
+  console.log(data);
   return data;
 };
 

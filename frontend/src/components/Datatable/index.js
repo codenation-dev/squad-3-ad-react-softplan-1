@@ -1,47 +1,50 @@
-import React , { useState } from 'react';
+import React, { useEffect } from 'react';
+import Button from '../Button';
+import Table from '../Table';
 
 
 export default function DataTable(props) {
 
-  const [columns, setColumns] = useState([]);
-  const [items, setItems] = useState([]);
-
-
-
   const handleSelectItem = id => { }
+  const handleDelete = id => { }
+  const handleHistory = id => { }
 
-
-    const cols = () => { 
-     columns.state.map(column  => <th><p>mmm</p>{column}</th> );
-    }
-
-    const its = (props) => {
-
-      setItems(props.items);
-
-      return items.state.map(item => (
-                                        <tr key={item.id}>
-                                          <td>             
-                                            <input type="checkbox" checked> </input>
-                                          </td>
-                                          <td>{item.level}</td>
-                                          <td>{item.log}</td>
-                                          <td>{item.eventos}</td>
-                                        </tr>
-                                        )
-                              )
-    }
+  useEffect(() => {
+    console.log(props.items)
+    console.log(props.columns)
+  });
 
     return (
-      <div className="table">
-        <thead className="table-header">
-          <tr>
-            {cols}
-          </tr> 
-        </thead>
-        <tbody className="table-body">
-          {items}
-        </tbody>
-      </div>
+      <React.Fragment>
+        <Table>
+          <Table.Head>
+            {
+              props.columns.map(column  => <Table.Head.Item>{column}</Table.Head.Item> )
+            }
+          </Table.Head>
+          <Table.Body>
+                {                      
+                  props.items.map( (option, idx) => {
+                    return (
+                      <React.Fragment>
+                      <Table.Body.Row key={idx}> 
+                        <Table.Body.Row.Item><Button label={"Arquivar"}/></Table.Body.Row.Item>
+                        <Table.Body.Row.Item><Button label={"Apagar"}/></Table.Body.Row.Item>
+                        <Table.Body.Row.Item>{option.type}</Table.Body.Row.Item>
+                        <Table.Body.Row.Item>
+                          {option.detail}
+                          {option.origin}
+                          {option.createDate}
+                        </Table.Body.Row.Item>
+                        <Table.Body.Row.Item>{option.quantity}</Table.Body.Row.Item>
+                      </Table.Body.Row>
+                      </React.Fragment>   
+
+                    );
+                  })           
+                }
+          </Table.Body> 
+        </Table>
+      </React.Fragment>
     )
 }

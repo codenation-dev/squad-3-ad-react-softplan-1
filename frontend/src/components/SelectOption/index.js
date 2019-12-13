@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 
-export default function SelectOption(props) { 
+export default function SelectOption(props) {     
 
+    const [selectedOption, setSelectedOption] = useState('');
 
     return(
-        <div className="selectOption">
-        <select>
-        <option></option>
+        <div className="select-option">
+        <select>{
+                   props.options.map( option => <option>{option}</option>)
+                }
         </select>
         </div>
     )
