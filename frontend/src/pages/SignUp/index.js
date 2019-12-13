@@ -2,22 +2,38 @@ import React from "react";
 import { Link } from "react-router-dom";
 // import { Container } from './styles';
 import { register } from '../../services/api.js'
+import { Form, Input } from "@rocketseat/unform";
+import * as Yup from "yup";
 
-export default function SignUp(props) {
+const schema = Yup.object().shape({
+  name: Yup.string()
+    .required(`O nome é obrigatório.`),
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    register(props.history, event.target.name.value, event.target.email.value, event.target.pwd.value);
+  email: Yup.string()
+    .email(`Insira um e-mail válido.`)
+    .required(`O e-mail é obrigatório.`),
+
+  pwd: Yup.string()
+               .required(`A senha é obrigatória.`)
+               .min(6, 'A senha deve conter no mínimo seis dígitos.')
+});
+
+const SignUp = (props) => {
+
+  const handleSubmit = ({name, email, pwd}) => {
+    register(props.history, name, email, pwd)
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input name="name" type="text" placeholder="Seu nome" />
-      <input name="email" type="email" placeholder="Seu e-mail" />
-      <input name="pwd" type="password" placeholder="Sua senha secreta" />
+    <Form onSubmit={handleSubmit} schema={schema}>
+      <Input name="name" type="text" placeholder="Seu nome" />
+      <Input name="email" type="email" placeholder="Seu e-mail" />
+      <Input name="pwd" type="password" placeholder="Sua senha secreta" />
 
       <button type="submit">Cadastrar</button>
       <Link to="/">Voltar</Link>
-    </form>
+    </Form>
   );
 }
+
+export default SignUp;
