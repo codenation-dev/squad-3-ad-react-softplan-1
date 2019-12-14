@@ -1,9 +1,9 @@
 import React from "react";
-import Header from "../../components/Header";
 import {useParams} from "react-router-dom";
 import api from '../../components/GridView/data.json';
 import DetailItemText from '../../components/DetailItemText';
 import DetailItemColor from '../../components/DetailItemColor';
+import '../../bulma.min.css';
 
 const Detail = (props) => {
 
@@ -23,23 +23,28 @@ const Detail = (props) => {
   const data = itemLog[0]
 
   return (
-      <>
-        <Header />
+      <div>
 
-        <button onClick={voltarHandler}>Voltar</button>
-
-        <h2>Log ID {data.id}</h2>
-
-        <div className="Content">
-          <DetailItemText label="Nome" text={data.name}/>
-          <DetailItemColor type={data.type}/>
-          <DetailItemText label="Título" text={data.title}/>
-          <DetailItemText label="Detalhes" text={data.detail}/>
-          <DetailItemText label="Origem" text={data.orign}/>
-          <DetailItemText label="Eventos" text={data.quantity}/>
-          <DetailItemText label="Criado em" text={data.createDate}/>
+        <div>    
+          <button className="button is-link is-small" onClick={voltarHandler}>Voltar</button>
+          <DetailItemText   label={'Log ID ' + data.id}text={data.name}/>
+          <DetailItemColor   type={data.type}/> 
         </div>  
-      </>
+
+
+
+        <div className="columns">
+          <div className="column">          
+            <DetailItemText  label="Título" text={data.title}/>
+            <DetailItemText  label="Detalhes" text={data.detail}/>
+          </div> 
+          <div className="column">
+            <DetailItemText  label="Eventos" text={data.quantity}/>     
+            <DetailItemText  label="Origem" text={data.orign}/>
+            <DetailItemText  label="Criado em" text={data.createDate}/>
+          </div>  
+        </div>
+      </div>
   )
 }
 
