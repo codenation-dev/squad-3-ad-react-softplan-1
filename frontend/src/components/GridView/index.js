@@ -1,4 +1,6 @@
-import React , { useEffect, useState } from 'react'
+import React , { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
+import { gridview } from '../../actions';
 import Datatable from '../Datatable';
 import SelectOption from '../SelectOption';
 import Search from '../Search';
@@ -6,7 +8,7 @@ import { getLogs } from '../../services/api.js'
 import api from './data.json';
 
 
-export default function GridView() {
+export default function GridView( { dispatch } ) {
 
   const type = ['Produção','Homologação','Dev'];
   const ordenacao = ['Ordenar Por','Level','Frequência'] ;
@@ -35,7 +37,7 @@ export default function GridView() {
           <SelectOption options={ type }/>
           <SelectOption options={ ordenacao }/>
           <SelectOption options={ busca }/>
-          <Search className="input" />
+          <Search className="inputSearch" />
         <Datatable columns={columns} items={items} />
         </div>
         </section>

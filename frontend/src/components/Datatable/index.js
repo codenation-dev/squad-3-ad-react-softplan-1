@@ -5,9 +5,11 @@ import Table from '../Table';
 
 export default function DataTable(props) {
 
-  const handleSelectItem = id => { }
-  const handleDelete = id => { }
-  const handleHistory = id => { }
+  const handleDelete = (id, e) => {
+  }
+
+  const handleHistory = (id, e) => { 
+  }
 
   useEffect(() => {
     console.log(props.items)
@@ -28,9 +30,9 @@ export default function DataTable(props) {
                     return (
                       <React.Fragment>
                       <Table.Body.Row key={idx}> 
-                        <Table.Body.Row.Item><Button label={"Arquivar"}/></Table.Body.Row.Item>
-                        <Table.Body.Row.Item><Button label={"Apagar"}/></Table.Body.Row.Item>
-                        <Table.Body.Row.Item>{option.type}</Table.Body.Row.Item>
+                        <Table.Body.Row.Item><Button onClick={handleHistory(option.id)} label={"Arquivar"}/></Table.Body.Row.Item>
+                        <Table.Body.Row.Item><Button onClick={handleDelete(option.id)} label={"Apagar"}/></Table.Body.Row.Item>
+                        <Table.Body.Row.Item className="label">{option.type}</Table.Body.Row.Item>
                         <Table.Body.Row.Item>
                           {option.detail}
                           {option.origin}
