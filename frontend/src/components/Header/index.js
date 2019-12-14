@@ -1,9 +1,24 @@
 import React from "react";
+import { Container, Content, Profile } from './styles';
+import { Link } from 'react-router-dom';
   
 export default function Header(props) {
   return(
-    <div className="header">
-      <h1>Bem vindo ...  seu token é 834463a1513858d7b2d2db1ecb99307045712fbd9474dfd78cf78b29db00e90b</h1>
-    </div>  
-  )
+    <Container>
+      <Content>
+        <nav>
+          <Link to='/dashboard'>DASHBOARD</Link>
+        </nav>
+        <aside>
+          <Profile>
+            <div>
+              <strong>Nome Teste</strong>
+              <Link to='/profile'>Meu Perfil</Link>
+            </div>
+            <img src="https://api.adorable.io/avatars/50/abott@adorable.png" alt="Nome Teste"/>
+          </Profile>
+        </aside>
+      </Content>
+    </Container>
+  );
 }

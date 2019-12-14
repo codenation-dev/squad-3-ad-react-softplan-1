@@ -1,7 +1,7 @@
 import React from "react";
 import GridView from "../../components/GridView";
 import Button from "../../components/Button";
-import Header from "../../components/Header";
+
 
 const Dashboard = (props) => {
 
@@ -12,7 +12,6 @@ const Dashboard = (props) => {
 
   return (
     <div className="dashboard">
-      <Header />
       <Button label={'Sair'}  onClick={handleSair} />
       <GridView />
     </div>
