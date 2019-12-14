@@ -19,7 +19,7 @@ export const Content = styled.div`
     background: linear-gradient(-90deg, #7159c1, #ab59c1);   
   }
   
-  inputSearch {
+  search {
     background-position: 10px 10px;
     background-repeat: no-repeat;
     width: 100%;
@@ -32,12 +32,6 @@ export const Content = styled.div`
       color: rgba(255, 255, 255, 0.7);
     }
   }
-
-  label {
-    background : yellow;
-  }
-
-
 
   button {
     margin: 5px 0 0;
@@ -73,14 +67,14 @@ export const Content = styled.div`
     background-color: #dddddd;
   }
 
-  gridViewHeader {
+  gridview-header {
     min-height: 100vh;
     height: 100%;
     display: flex;
     flex-direction: column;
   }
    
-  selectOption {
+  select-option {
     background-position: 10px 10px;
     background-repeat: no-repeat;
     width: 100%;
