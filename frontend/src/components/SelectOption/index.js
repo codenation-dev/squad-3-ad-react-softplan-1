@@ -6,7 +6,7 @@ export default function SelectOption(props) {
     const [selectedOption, setSelectedOption] = useState('');
 
     return(
-        <div className="select-option">
+        <div className="selectOption">
         <select>{
                    props.options.map( option => <option>{option}</option>)
                 }
