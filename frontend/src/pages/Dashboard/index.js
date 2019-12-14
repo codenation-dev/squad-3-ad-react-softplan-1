@@ -1,6 +1,7 @@
 import React from "react";
 import GridView from "../../components/GridView";
 import Button from "../../components/Button";
+import Header from "../../components/Header";
 
 const Dashboard = (props) => {
 
@@ -10,14 +11,11 @@ const Dashboard = (props) => {
   }
 
   return (
-    <React.Fragment>
     <div className="dashboard">
+      <Header />
       <Button label={'Sair'}  onClick={handleSair} />
-    <div className="gridview"> 
       <GridView />
     </div>
-    </div>
-    </React.Fragment>
   )
 }
 

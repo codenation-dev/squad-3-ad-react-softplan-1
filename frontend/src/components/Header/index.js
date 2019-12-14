@@ -1,36 +1,9 @@
 import React from "react";
-import { makeStyles } from '@material-ui/core/styles';
-import { AppBar, Toolbar, Typography } from '@material-ui/core';
-
-const useStyles = makeStyles(theme => ({
-    root: {
-      flexGrow: 1,
-    },
-    menuButton: {
-      marginRight: theme.spacing(2),
-    },
-    title: {
-      flexGrow: 1,
-    },
-  })); 
-
   
-function Header(props) {
-  
-const classes = useStyles();
-
+export default function Header(props) {
   return(
-    <div className={classes.root}>
-      <AppBar position="static">
-        <Toolbar>
-          <Typography variant="h6" className={classes.title}>
-            Central de Erros
-          </Typography>
-          {props.children}
-        </Toolbar>
-      </AppBar> 
+    <div className="header">
+      <h1>Bem vindo ...  seu token é 834463a1513858d7b2d2db1ecb99307045712fbd9474dfd78cf78b29db00e90b</h1>
     </div>  
   )
 }
-
-export default Header;
