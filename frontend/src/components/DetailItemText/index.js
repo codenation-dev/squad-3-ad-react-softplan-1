@@ -1,10 +1,11 @@
 import React from 'react';
+import '../../bulma.min.css';
 
 const DetailItemText = (props) => {    
     return(
-        <div>
-            <h2>{props.label}</h2>
-            <p>{props.text}</p>
+        <div className="panel">
+            <p className="panel-heading ">{props.label}</p>
+            <p className="panel-block has-text-white">{props.text}</p>
         </div>
     )
 }
