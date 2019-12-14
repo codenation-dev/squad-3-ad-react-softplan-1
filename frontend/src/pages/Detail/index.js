@@ -2,7 +2,6 @@ import React, {useEffect, useState} from "react";
 import {useParams } from "react-router-dom";
 import { getLog } from '../../services/api.js'
 import DetailItemText from '../../components/DetailItemText';
-import DetailItemColor from '../../components/DetailItemColor';
 import '../../bulma.min.css';
 
 const Detail = (props) => {
@@ -19,10 +18,9 @@ const Detail = (props) => {
 
   if ((data !== undefined) && (data !== null))
   return (
-      <div>
-        <div>    
-          <DetailItemText   label={'Log ID ' + data.id}text={data.name}/>
-          <DetailItemColor   type={data.type}/> 
+      <div style={{padding: '1vw'}}>
+        <div style={{paddingBottom: '24px'}}>    
+          <DetailItemText   label={'Log ID ' + data.id} text={data.name} type={data.type}/>          
         </div>  
         <div className="columns">
           <div className="column">          
