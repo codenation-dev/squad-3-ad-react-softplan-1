@@ -1,6 +1,7 @@
 import React from "react";
 import api from '../../services/api';
 import { Input } from '@rocketseat/unform';
+import { Link } from "react-router-dom";
 
 import { Container, Log } from './styles'
 
@@ -39,7 +40,7 @@ const Dashboard = (props) => {
                <span>Qts</span>
             </Log>
             <Log>
-               <strong>Data teste</strong>
+               <Link to="/">Data teste</Link>
                <span>Teste Nome</span>
             </Log>
             <Log>
