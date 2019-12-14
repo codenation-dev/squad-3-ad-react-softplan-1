@@ -8,6 +8,7 @@ export const Container = styled.div`
 export const Content = styled.div`
   height: 64px;
   max-width: 900px;
+  min-width: 100%;
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
@@ -58,10 +59,9 @@ export const Profile = styled.div`
       font-size: 12px;
       color: #999;
     }
-
-    img {
+  }
+  img {
       height: 32px;
       border-radius: 50%;
     }
-  }
 `;
