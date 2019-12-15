@@ -5,11 +5,13 @@ import { Link } from "react-router-dom";
 import { Container, Log } from './styles'
 
 const Dashboard = (props) => {
-   const [logs, setLogs] = useState([]);
+const [logs, setLogs] = useState([]);
+
 
    useEffect(() => {
      const token = localStorage.getItem("central-erros-auth-token");
      console.log(token);
+
      getLogs(token);
    },[]);
  
@@ -18,6 +20,7 @@ const Dashboard = (props) => {
       .then(function(response){
         return response.text();
       }).then(data => {
+
           setLogs(JSON.parse(data));
         })
         .catch(error => {
@@ -25,6 +28,30 @@ const Dashboard = (props) => {
         });
     };
 
+    const handleChangeLevel = e => {
+        const token = localStorage.getItem("central-erros-auth-token");
+        
+        setLogs(getLogs(token));
+
+        if (e.target.value !== 'default') {
+        setLogs(
+            logs.filter(log => 
+                log.type === e.target.value
+            )
+        );
+      }
+
+        console.log(e.target.value);
+        
+        console.log(e.target.name);
+    };
+
+
+    const handleChange = e => {}
+
+
+    const handleDeletar = () => {
+       
     const handleArquivar = (id) => {
       const token = localStorage.getItem("central-erros-auth-token");
       console.log("arquivar");
@@ -61,30 +88,34 @@ const Dashboard = (props) => {
     const handleProxima = () => {
        
     }
+
    return (
    <Container>
          <header>
-         <select name="level" >
-            <option value="value0" selected>Seleção</option>
-            <option value="value1">Produção</option>
-            <option value="value2">Homologação</option>
-            <option value="value3">Dev</option>
+         <select name="level" onChange={handleChangeLevel}>
+            <option value="default" selected>Filtrar por Level</option>
+            <option value="DEBUG">DEBUG</option>
+            <option value="ERROR">ERROR</option>
+            <option value="INFO">INFO</option>
+            <option value="WARNING">WARNING</option>
+
          </select>
-         <select name="type" >
-            <option value="value0" selected>Ordenar por</option>
-            <option value="value1">Level</option>
-            <option value="value2">Frequencia</option>
+         <select name="type" onChange={handleChange}>
+            <option value="default" selected>Ordenar por</option>
+            <option value="level">Level</option>
+            <option value="quantity">Frequencia</option>
          </select>
-         <select name="type" >
-            <option value="value0" selected>Buscar por</option>
-            <option value="value1">Level</option>
-            <option value="value2">Descrição</option>
-            <option value="value3">Origem</option>
+         <select name="type" onChange={handleChange}>
+            <option value="default" selected>Buscar por</option>
+            <option value="level">Level</option>
+            <option value="name">Descrição</option>
+            <option value="origin">Origem</option>
          </select>
          <Input name="name" placeholder="Pesquisar aqui"></Input>
       </header>
          <ul>
          {        
+
             logs === null ?
             (
             <Log>
@@ -94,13 +125,29 @@ const Dashboard = (props) => {
             (
                logs.map( (log, idx) => {
                   return (
+                  <>
                   <Log key={idx}>
-                  <strong>{log.type}</strong>
-                  <span>log.title</span>
-                  <button type="button" onClick={() => handleArquivar(log.id)}>Arquivar</button>
-                  <button type="button" onClick={() => handleDeletar(log.id)}>Deletar</button>
-                  <Link to={`/detail/${log.id}`}>detalhe</Link>
+                  <strong>Level</strong>
+                  <span>{log.type}</span>
+                  <button type="button" onClick={handleArquivar}>Arquivar</button>
+                  <button type="button" onClick={handleDeletar}>Deletar</button>
                   </Log>         
+                  <Log key={idx}>
+                  <strong>Log</strong>
+                  <span>{log.name}</span>
+                  <span>{log.origin}</span>
+                  <span>{log.data}</span>
+                  <button type="button" onClick={handleArquivar}>Arquivar</button>
+                  <button type="button" onClick={handleDeletar}>Deletar</button>
+                  </Log>         
+                  <Log key={idx}>
+                  <strong>Eventos</strong>
+                  <span>{log.quantity}</span>
+                  <button type="button" onClick={handleArquivar}>Arquivar</button>
+                  <button type="button" onClick={handleDeletar}>Deletar</button>
+                  </Log>        
+                  </> 
+
                   );
                })       
             )
