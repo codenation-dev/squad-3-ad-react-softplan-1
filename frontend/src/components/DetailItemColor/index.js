@@ -1,4 +1,5 @@
 import React from 'react';
+import '../../bulma.min.css';
 
 const DetailItemText = (props) => {   
     
