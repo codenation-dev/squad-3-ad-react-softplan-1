@@ -5,26 +5,53 @@ import { Link } from "react-router-dom";
 import { Container, Log } from './styles'
 
 const Dashboard = (props) => {
-   const [logs, setLogs] = useState([]);
+const [logs, setLogs] = useState([]);
+   const [paginaAtual, setPaginaAtual] = useState(1);
+   const [totalPaginas, setTotalPaginas] = useState(1);
 
    useEffect(() => {
      const token = localStorage.getItem("central-erros-auth-token");
      console.log(token);
-     getLogs(token);
+
+     getLogs(token, 1);
    },[]);
  
-   const getLogs = ( token) => {
-      fetch(`https://centralerrosapp.herokuapp.com/logs/${token}`)
+   const getLogs = ( token, pagina) => {
+     //https://centralerrosapp.herokuapp.com
+      fetch(`https://centralerrosapp.herokuapp.com/paglogs/${pagina}/${token}`)
       .then(function(response){
         return response.text();
       }).then(data => {
-          setLogs(JSON.parse(data));
+          const json = JSON.parse(data);
+          setLogs(json.logs);
+          setTotalPaginas(Math.ceil(json.total/10));
         })
         .catch(error => {
           console.log(error.message);
         });
     };
 
+    const handleChangeLevel = e => {
+        const token = localStorage.getItem("central-erros-auth-token");
+        
+        setLogs(getLogs(token));
+
+        if (e.target.value !== 'default') {
+        setLogs(
+            logs.filter(log => 
+                log.type === e.target.value
+            )
+        );
+      }
+
+        console.log(e.target.value);
+        
+        console.log(e.target.name);
+    };
+
+
+    const handleChange = e => {}
+       
     const handleArquivar = (id) => {
       const token = localStorage.getItem("central-erros-auth-token");
       console.log("arquivar");
@@ -55,48 +82,65 @@ const Dashboard = (props) => {
     }
 
     const handleAnterior = () => {
-
+      if (paginaAtual-1>0) {
+        const token = localStorage.getItem("central-erros-auth-token");
+        setPaginaAtual(paginaAtual-1);
+        getLogs(token, paginaAtual-1);
+      }
     }
 
     const handleProxima = () => {
-       
+      if (paginaAtual+1<=totalPaginas) {
+        const token = localStorage.getItem("central-erros-auth-token");
+        setPaginaAtual(paginaAtual+1);
+        getLogs(token, paginaAtual+1);
+      }
     }
+
    return (
    <Container>
          <header>
-         <select name="level" >
-            <option value="value0" selected>Seleção</option>
-            <option value="value1">Produção</option>
-            <option value="value2">Homologação</option>
-            <option value="value3">Dev</option>
+         <select name="level" onChange={handleChangeLevel}>
+            <option value="default" selected>Filtrar por Level</option>
+            <option value="DEBUG">DEBUG</option>
+            <option value="ERROR">ERROR</option>
+            <option value="INFO">INFO</option>
+            <option value="WARNING">WARNING</option>
+
          </select>
-         <select name="type" >
-            <option value="value0" selected>Ordenar por</option>
-            <option value="value1">Level</option>
-            <option value="value2">Frequencia</option>
+         <select name="type" onChange={handleChange}>
+            <option value="default" selected>Ordenar por</option>
+            <option value="level">Level</option>
+            <option value="quantity">Frequencia</option>
          </select>
-         <select name="type" >
-            <option value="value0" selected>Buscar por</option>
-            <option value="value1">Level</option>
-            <option value="value2">Descrição</option>
-            <option value="value3">Origem</option>
+         <select name="type" onChange={handleChange}>
+            <option value="default" selected>Buscar por</option>
+            <option value="level">Level</option>
+            <option value="name">Descrição</option>
+            <option value="origin">Origem</option>
          </select>
          <Input name="name" placeholder="Pesquisar aqui"></Input>
       </header>
          <ul>
          {        
-            logs === null ?
+            logs===null || logs.lenght === 0 ?
             (
-            <Log>
+            <Log key="0">
             <strong>sem dados</strong>
+            <span>""</span>
             </Log>              
             ) :
             (
                logs.map( (log, idx) => {
                   return (
+                  <>
                   <Log key={idx}>
-                  <strong>{log.type}</strong>
-                  <span>log.title</span>
+                  <strong>Level</strong>
+		  <strong>{log.type}</strong>
+		  <strong>Título</strong>
+                  <span>{log.title}</span>
+                  <strong>Eventos</strong>
+		              <span>{log.quantity}</span>
                   <button type="button" onClick={() => handleArquivar(log.id)}>Arquivar</button>
                   <button type="button" onClick={() => handleDeletar(log.id)}>Deletar</button>
                   <Link to={`/detail/${log.id}`}>detalhe</Link>
@@ -108,6 +152,7 @@ const Dashboard = (props) => {
          </ul>
          <button type="button" onClick={handleAnterior}>Anterior</button>
          <button type="button" onClick={handleProxima}>Próxima</button>
+         Pagina {paginaAtual} de {totalPaginas}
    </Container>
    )
 }
