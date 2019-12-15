@@ -6,7 +6,7 @@ import { Container, Log } from './styles'
 
 const Dashboard = (props) => {
 const [logs, setLogs] = useState([]);
-
+const [origLogs, setOrigLogs] = useState([]);  
 
    useEffect(() => {
      const token = localStorage.getItem("central-erros-auth-token");
@@ -20,37 +20,53 @@ const [logs, setLogs] = useState([]);
       .then(function(response){
         return response.text();
       }).then(data => {
-
-          setLogs(JSON.parse(data));
+          const json = JSON.parse(data);
+          setOrigLogs(json.logs);
+          setLogs(json.logs);
         })
         .catch(error => {
           console.log(error.message);
         });
     };
 
-    const handleChangeLevel = e => {
-        const token = localStorage.getItem("central-erros-auth-token");
+    const handleChange = e => {
         
-        setLogs(getLogs(token));
+        switch (e.target.name) {
+            case 'type' :
+                if (e.target.value !== 'default') {
+                    setLogs(
+                        origLogs.filter(log => 
+                            log.type === e.target.value
+                    )
+                  );
+                }
+            break;
 
-        if (e.target.value !== 'default') {
-        setLogs(
-            logs.filter(log => 
-                log.type === e.target.value
-            )
-        );
-      }
+            case 'order' :
+                console.log('order')
+                if (e.target.value !== 'default') {
+
+                    if (e.target.value === 'level') {
+                        setLogs(
+                            origLogs.sort( ( prev, next ) => prev.type  > next.type ? -1 : (prev.type < next.type ? 1 : 0))       
+                        )
+                    } else {
+                        setLogs(
+                            origLogs.sort( ( prev, next ) => prev.quantity  < next.quantity ? -1 : (prev.quantity > next.quantity ? 1 : 0))       
+                        )
+                    }
+                }
+            break;
+
+            case 'search' :
+            break;
+    
+        }
 
         console.log(e.target.value);
         
         console.log(e.target.name);
     };
-
-
-    const handleChange = e => {}
-
-
-    const handleDeletar = () => {
        
     const handleArquivar = (id) => {
       const token = localStorage.getItem("central-erros-auth-token");
@@ -92,7 +108,7 @@ const [logs, setLogs] = useState([]);
    return (
    <Container>
          <header>
-         <select name="level" onChange={handleChangeLevel}>
+         <select name="type" onChange={handleChange}>
             <option value="default" selected>Filtrar por Level</option>
             <option value="DEBUG">DEBUG</option>
             <option value="ERROR">ERROR</option>
@@ -100,12 +116,12 @@ const [logs, setLogs] = useState([]);
             <option value="WARNING">WARNING</option>
 
          </select>
-         <select name="type" onChange={handleChange}>
+         <select name="order" onChange={handleChange}>
             <option value="default" selected>Ordenar por</option>
             <option value="level">Level</option>
             <option value="quantity">Frequencia</option>
          </select>
-         <select name="type" onChange={handleChange}>
+         <select name="search" onChange={handleChange}>
             <option value="default" selected>Buscar por</option>
             <option value="level">Level</option>
             <option value="name">Descrição</option>
@@ -116,7 +132,7 @@ const [logs, setLogs] = useState([]);
          <ul>
          {        
 
-            logs === null ?
+            logs === null?
             (
             <Log>
             <strong>sem dados</strong>
