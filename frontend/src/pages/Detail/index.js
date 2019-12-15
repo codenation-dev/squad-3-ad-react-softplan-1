@@ -1,6 +1,5 @@
-import React, {useEffect, useState} from "react";
-import {useParams } from "react-router-dom";
-import { getLog } from '../../services/api.js'
+import React, { useEffect, useState } from "react";
+import {useParams} from "react-router-dom";
 import DetailItemText from '../../components/DetailItemText';
 import '../../bulma.min.css';
 
@@ -8,13 +7,37 @@ const Detail = (props) => {
 
   const {id_log} = useParams();  
 
-  const [data, setData] = useState();
+  const voltarHandler = () => {
+      props.history.push('/dashboard')
+  } 
+  const [data, setData] = useState({});
 
-  const token = localStorage.getItem("central-erros-auth-token");
+   useEffect(() => {
+     const token = localStorage.getItem("central-erros-auth-token");
+     console.log(token);
+     getLog(token);
+   },[]);
 
-  useEffect(() => {
-    getLog(props.history, token, id_log, setData)      
-  }, [])  
+  //const itemLog = api.filter(el => el.id === parseInt(id_log))
+  const getLog = ( token) => {
+    fetch(`https://centralerrosapp.herokuapp.com/log/${id_log}/${token}`)
+    .then(function(response){
+      return response.text();
+    }).then(data => {
+        console.log(data);
+        setData(JSON.parse(data));
+      })
+      .catch(error => {
+        console.log(error.message);
+      });
+  };
+
+  if (data === null){
+    props.history.push("/404")
+    return <></>
+  }
+
+  //const data = itemLog[0]
 
   if ((data !== undefined) && (data !== null))
   return (
@@ -28,6 +51,7 @@ const Detail = (props) => {
             <DetailItemText  label="Detalhes" text={data.detail}/>
           </div> 
           <div className="column">
+            <DetailItemText  label="Situação" text={data.situacao==="I"?"Novo":"Arquivado"}/> 
             <DetailItemText  label="Eventos" text={data.quantity}/>     
             <DetailItemText  label="Origem" text={data.orign}/>
             <DetailItemText  label="Criado em" text={data.createDate}/>

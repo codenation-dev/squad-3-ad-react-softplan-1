@@ -1,5 +1,4 @@
 import React , { useEffect, useState } from 'react';
-import api from '../../services/api';
 import { Input } from '@rocketseat/unform';
 import { Link } from "react-router-dom";
 
@@ -19,7 +18,6 @@ const Dashboard = (props) => {
       .then(function(response){
         return response.text();
       }).then(data => {
-          console.log(data);
           setLogs(JSON.parse(data));
         })
         .catch(error => {
@@ -27,12 +25,33 @@ const Dashboard = (props) => {
         });
     };
 
-    const handleArquivar = () => {
-
+    const handleArquivar = (id) => {
+      const token = localStorage.getItem("central-erros-auth-token");
+      console.log("arquivar");
+      fetch(`https://centralerrosapp.herokuapp.com/arquivalog/${id}/${token}`)
+      .then(function(response){
+        return response.text();
+      }).then(data => {
+          setLogs(logs.filter(el => el.id !== id));
+        })
+        .catch(error => {
+          console.log(error.message);
+        });
     }
 
-    const handleDeletar = () => {
-       
+    const handleDeletar = (id) => {
+      console.log("deletar");
+      const token = localStorage.getItem("central-erros-auth-token");
+      console.log("arquivar");
+      fetch(`https://centralerrosapp.herokuapp.com/deletelog/${id}/${token}`)
+      .then(function(response){
+        return response.text();
+      }).then(data => {
+          setLogs(logs.filter(el => el.id !== id));
+        })
+        .catch(error => {
+          console.log(error.message);
+        });
     }
 
     const handleAnterior = () => {
@@ -78,8 +97,9 @@ const Dashboard = (props) => {
                   <Log key={idx}>
                   <strong>{log.type}</strong>
                   <span>log.title</span>
-                  <button type="button" onClick={handleArquivar}>Arquivar</button>
-                  <button type="button" onClick={handleDeletar}>Deletar</button>
+                  <button type="button" onClick={() => handleArquivar(log.id)}>Arquivar</button>
+                  <button type="button" onClick={() => handleDeletar(log.id)}>Deletar</button>
+                  <Link to={`/detail/${log.id}`}>detalhe</Link>
                   </Log>         
                   );
                })       
