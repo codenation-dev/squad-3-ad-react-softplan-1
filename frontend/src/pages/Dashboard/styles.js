@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { darken } from "polished";
 
 export const Container = styled.div`
   max-width: 600px;
@@ -51,30 +52,103 @@ export const Container = styled.div`
     grid-template-columns: repeat(2, 1fr);
     grid-gap:15px;
     margin-top:30px;
+    margin-bottom:30px;
   }
 `;
 
 export const Log = styled.li`
-  display:flex;
   padding: 20px;
   border-radius: 4px;
   background: #FFF;
   
-
-  strong {
-    display: block;
-    color: #7159c1;
-    font-size: 20px;
-    font-weight: normal;
-
-  }
-
-  span {
+  a {
     display: block;
     margin-top: 3px;
-    color: #666;
   }
 
+  label {margin:2px}
+
+  .leftRight {
+    display: flex;   
+    justify-content: space-between;    
+    flex-wrap: wrap;
+  }
+
+  .right {
+    display: flex;
+    justify-content: flex-end;     
+    flex-wrap: wrap; 
+  }
+
+  .left {
+    display: flex;
+    flex-wrap: wrap; 
+  }  
 `;
 
 
+export const ButtonApagar = styled.button`
+    width: 80px;
+    margin: 5px 0;
+    height: 33px;
+    background: #f64c75;
+    font-weight: bold;
+    color: #fff;
+    border: 0;
+    border-radius: 4px;
+    font-size: 16px;
+    transition: background 0.2s;
+
+    &:hover {
+      background: ${darken(0.08, "#f64c75")};
+    }
+`;
+
+export const ButtonArquivar = styled.button`
+    width: 80px;
+    margin: 5px;
+    height: 33px;
+    background: #3b9eff;
+    font-weight: bold;
+    color: #fff;
+    border: 0;
+    border-radius: 4px;
+    font-size: 16px;
+    transition: background 0.2s;
+
+    &:hover {
+      background: ${darken(0.03, "#3b9eff")};
+    }
+`;
+
+export const ContainerPaginacao = styled.div`
+
+label {
+  text-align: center;
+  margin: 0 auto;
+  color: white;
+}
+
+div {
+  display: flex;
+  justify-content: center;     
+  flex-wrap: wrap; 
+}
+
+button {
+    width: 80px;
+    margin: 5px;
+    height: 33px;
+    background: #3b9eff;
+    font-weight: bold;
+    color: #fff;
+    border: 0;
+    border-radius: 4px;
+    font-size: 16px;
+    transition: background 0.2s;
+
+    &:hover {
+      background: ${darken(0.03, "#3b9eff")};
+    }
+}    
+`
