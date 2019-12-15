@@ -6,22 +6,17 @@ import { Container, Log } from './styles'
 
 const Dashboard = (props) => {
 const [logs, setLogs] = useState([]);
-
-
-   useEffect(() => {
-     const token = localStorage.getItem("central-erros-auth-token");
-     console.log(token);
-
-     getLogs(token);
-   },[]);
- 
-   const getLogs = ( token) => {
-      fetch(`https://centralerrosapp.herokuapp.com/logs/${token}`)
+   const [paginaAtual, setPaginaAtual] = useState(1);
+   const [totalPaginas, setTotalPaginas] = useState(1);
+   const getLogs = ( token, pagina) => {
+     //https://centralerrosapp.herokuapp.com
+      fetch(`https://centralerrosapp.herokuapp.com/paglogs/${pagina}/${token}`)
       .then(function(response){
         return response.text();
       }).then(data => {
-
-          setLogs(JSON.parse(data));
+          const json = JSON.parse(data);
+          setLogs(json.logs);
+          setTotalPaginas(Math.ceil(json.total/10));
         })
         .catch(error => {
           console.log(error.message);
@@ -48,9 +43,6 @@ const [logs, setLogs] = useState([]);
 
 
     const handleChange = e => {}
-
-
-    const handleDeletar = () => {
        
     const handleArquivar = (id) => {
       const token = localStorage.getItem("central-erros-auth-token");
@@ -82,11 +74,19 @@ const [logs, setLogs] = useState([]);
     }
 
     const handleAnterior = () => {
-
+      if (paginaAtual-1>0) {
+        const token = localStorage.getItem("central-erros-auth-token");
+        setPaginaAtual(paginaAtual-1);
+        getLogs(token, paginaAtual-1);
+      }
     }
 
     const handleProxima = () => {
-       
+      if (paginaAtual+1<=totalPaginas) {
+        const token = localStorage.getItem("central-erros-auth-token");
+        setPaginaAtual(paginaAtual+1);
+        getLogs(token, paginaAtual+1);
+      }
     }
 
    return (
@@ -115,39 +115,27 @@ const [logs, setLogs] = useState([]);
       </header>
          <ul>
          {        
-
-            logs === null ?
+            logs===null || logs.lenght === 0 ?
             (
-            <Log>
+            <Log key="0">
             <strong>sem dados</strong>
+            <span>""</span>
             </Log>              
             ) :
             (
                logs.map( (log, idx) => {
                   return (
-                  <>
                   <Log key={idx}>
                   <strong>Level</strong>
-                  <span>{log.type}</span>
-                  <button type="button" onClick={handleArquivar}>Arquivar</button>
-                  <button type="button" onClick={handleDeletar}>Deletar</button>
-                  </Log>         
-                  <Log key={idx}>
-                  <strong>Log</strong>
-                  <span>{log.name}</span>
-                  <span>{log.origin}</span>
-                  <span>{log.data}</span>
-                  <button type="button" onClick={handleArquivar}>Arquivar</button>
-                  <button type="button" onClick={handleDeletar}>Deletar</button>
-                  </Log>         
-                  <Log key={idx}>
+		  <strong>{log.type}</strong>
+		  <strong>Título</strong>
+                  <span>{log.title}</span>
                   <strong>Eventos</strong>
-                  <span>{log.quantity}</span>
-                  <button type="button" onClick={handleArquivar}>Arquivar</button>
-                  <button type="button" onClick={handleDeletar}>Deletar</button>
-                  </Log>        
-                  </> 
-
+		              <span>{log.quantity}</span>
+                  <button type="button" onClick={() => handleArquivar(log.id)}>Arquivar</button>
+                  <button type="button" onClick={() => handleDeletar(log.id)}>Deletar</button>
+                  <Link to={`/detail/${log.id}`}>detalhe</Link>
+                  </Log>         
                   );
                })       
             )
@@ -155,6 +143,7 @@ const [logs, setLogs] = useState([]);
          </ul>
          <button type="button" onClick={handleAnterior}>Anterior</button>
          <button type="button" onClick={handleProxima}>Próxima</button>
+         Pagina {paginaAtual} de {totalPaginas}
    </Container>
    )
 }
