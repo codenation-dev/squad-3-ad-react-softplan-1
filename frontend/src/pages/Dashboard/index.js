@@ -8,6 +8,14 @@ const Dashboard = (props) => {
 const [logs, setLogs] = useState([]);
    const [paginaAtual, setPaginaAtual] = useState(1);
    const [totalPaginas, setTotalPaginas] = useState(1);
+
+   useEffect(() => {
+     const token = localStorage.getItem("central-erros-auth-token");
+     console.log(token);
+
+     getLogs(token, 1);
+   },[]);
+ 
    const getLogs = ( token, pagina) => {
      //https://centralerrosapp.herokuapp.com
       fetch(`https://centralerrosapp.herokuapp.com/paglogs/${pagina}/${token}`)
@@ -127,8 +135,8 @@ const [logs, setLogs] = useState([]);
                   return (
                   <Log key={idx}>
                   <strong>Level</strong>
-		  <strong>{log.type}</strong>
-		  <strong>Título</strong>
+		              <strong>{log.type}</strong>
+		              <strong>Título</strong>
                   <span>{log.title}</span>
                   <strong>Eventos</strong>
 		              <span>{log.quantity}</span>
