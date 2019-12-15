@@ -1,18 +1,18 @@
 import React , { useEffect, useState } from 'react';
-import api from '../../services/api';
 import { Input } from '@rocketseat/unform';
 import { Link } from "react-router-dom";
 
 import { Container, Log } from './styles'
 
 const Dashboard = (props) => {
-   const [logs, setLogs] = useState([]);
-   const [dataSource, setDataSource] = useState([]);
+const [logs, setLogs] = useState([]);
+
 
    useEffect(() => {
      const token = localStorage.getItem("central-erros-auth-token");
      console.log(token);
-    getLogs(token);
+
+     getLogs(token);
    },[]);
  
    const getLogs = ( token) => {
@@ -20,7 +20,7 @@ const Dashboard = (props) => {
       .then(function(response){
         return response.text();
       }).then(data => {
-          console.log(data);
+
           setLogs(JSON.parse(data));
         })
         .catch(error => {
@@ -49,12 +49,36 @@ const Dashboard = (props) => {
 
     const handleChange = e => {}
 
-    const handleArquivar = () => {
-
-    }
 
     const handleDeletar = () => {
        
+    const handleArquivar = (id) => {
+      const token = localStorage.getItem("central-erros-auth-token");
+      console.log("arquivar");
+      fetch(`https://centralerrosapp.herokuapp.com/arquivalog/${id}/${token}`)
+      .then(function(response){
+        return response.text();
+      }).then(data => {
+          setLogs(logs.filter(el => el.id !== id));
+        })
+        .catch(error => {
+          console.log(error.message);
+        });
+    }
+
+    const handleDeletar = (id) => {
+      console.log("deletar");
+      const token = localStorage.getItem("central-erros-auth-token");
+      console.log("arquivar");
+      fetch(`https://centralerrosapp.herokuapp.com/deletelog/${id}/${token}`)
+      .then(function(response){
+        return response.text();
+      }).then(data => {
+          setLogs(logs.filter(el => el.id !== id));
+        })
+        .catch(error => {
+          console.log(error.message);
+        });
     }
 
     const handleAnterior = () => {
@@ -74,6 +98,7 @@ const Dashboard = (props) => {
             <option value="ERROR">ERROR</option>
             <option value="INFO">INFO</option>
             <option value="WARNING">WARNING</option>
+
          </select>
          <select name="type" onChange={handleChange}>
             <option value="default" selected>Ordenar por</option>
@@ -90,7 +115,8 @@ const Dashboard = (props) => {
       </header>
          <ul>
          {        
-            logs === [] ?
+
+            logs === null ?
             (
             <Log>
             <strong>sem dados</strong>
@@ -121,6 +147,7 @@ const Dashboard = (props) => {
                   <button type="button" onClick={handleDeletar}>Deletar</button>
                   </Log>        
                   </> 
+
                   );
                })       
             )
