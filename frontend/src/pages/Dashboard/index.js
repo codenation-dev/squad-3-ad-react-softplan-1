@@ -27,6 +27,21 @@ const Dashboard = (props) => {
         });
     };
 
+    const handleArquivar = () => {
+
+    }
+
+    const handleDeletar = () => {
+       
+    }
+
+    const handleAnterior = () => {
+
+    }
+
+    const handleProxima = () => {
+       
+    }
    return (
    <Container>
          <header>
@@ -63,12 +78,16 @@ const Dashboard = (props) => {
                   <Log key={idx}>
                   <strong>{log.type}</strong>
                   <span>log.title</span>
+                  <button type="button" onClick={handleArquivar}>Arquivar</button>
+                  <button type="button" onClick={handleDeletar}>Deletar</button>
                   </Log>         
                   );
                })       
             )
          }
          </ul>
+         <button type="button" onClick={handleAnterior}>Anterior</button>
+         <button type="button" onClick={handleProxima}>Próxima</button>
    </Container>
    )
 }
