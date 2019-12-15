@@ -1,10 +1,26 @@
 import axios from "axios";
 
-const API = axios.create({ baseURL: "https://centralerros.herokuapp.com" });
+const API = axios.create({ baseURL: "https://centralerrosapp.herokuapp.com" });
 
 const getUsers = async ({ token }) => {
-  const { data } = await API.get(`/logins/${token}`);
+  const { data } = await API.get(`/logins/${token}`)
+  .then(function(response){
+    console.log(response.data); 
+    console.log(response.status);
+    return response.data; 
+  });
   return data;
+};
+
+const getUser = async ( token, call) => {
+  const { data } = await API.get(`/findlogin/${token}`)
+  .then(function(response){
+    console.log(response.data); 
+    console.log(response.status);
+    return response.data; 
+  });
+  call(data);
+  console.log(data);
 };
 
 const login = async ( history, email, pwd ) => {
@@ -15,8 +31,8 @@ const login = async ( history, email, pwd ) => {
       "Content-Type": "application/json",
       "Access-Control-Allow-Origin": "*"
     }
-  };
-  fetch(`https://centralerros.herokuapp.com/login`, requestInfo)
+  };     
+  fetch(`https://centralerrosapp.herokuapp.com/login`, requestInfo)
     .then(response => {
       if (response.ok) {
         console.log("login ok");
@@ -36,11 +52,16 @@ const login = async ( history, email, pwd ) => {
 };
 
 const getLogs = async ({ token }) => {
-  //const { data } = await API.get(`/logs/${token}`).response.json();
-  console.log(token);
-  let response = await fetch(`https://api.github.com/users/jaquiel`);
-  let data = await response.json()
-  console.log(data);
+  const { data } = await API.get(`/logs/${token}`)
+  .then(function(response){
+    console.log(response.data); 
+    console.log(response.status);
+    return response.data; 
+  });
+  //console.log(token);
+  //let response = await fetch(`https://api.github.com/users/jaquiel`);
+  //let data = await response.json()
+  //console.log(data);
   return data;
 };
 
@@ -54,7 +75,7 @@ const register = async (history, name, email, pwd) => {
     }
   };
 
-  fetch(`https://centralerros.herokuapp.com/savelogin`, requestInfo)
+  fetch(`https://centralerrosapp.herokuapp.com/savelogin`, requestInfo)
     .then(response => {
       if (response.ok) {
         console.log("usuário cadastrado com sucesso");
@@ -75,4 +96,4 @@ const register = async (history, name, email, pwd) => {
     });
 };
 
-export { login, getUsers, getLogs, register };
+export { login, getUser, getUsers, getLogs, register };

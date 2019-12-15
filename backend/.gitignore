@@ -1,0 +1,6 @@
+/logs/
+/target/
+/.project
+/mapaestatistico.log
+/.classpath
+.settings

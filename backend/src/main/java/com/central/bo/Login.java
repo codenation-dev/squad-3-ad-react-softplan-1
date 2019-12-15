@@ -21,14 +21,16 @@ public class Login {
     private String name;
     private String email;
     private String pwd;
-
+    private String token;
+    
     public Login() {
     }
 
-    public Login(String name, String email, String pwd) {
+    public Login(String name, String email, String pwd, String token) {
         this.name = name;
         this.email = email;
         this.pwd = pwd;
+        this.setToken(token);
     }
 
     @Override
@@ -37,6 +39,7 @@ public class Login {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
+                 ", token='" + getToken() + '\'' +
                 '}';
     }
 
@@ -81,5 +84,13 @@ public class Login {
 		login.setEmail((String)map.get("email"));
 		login.setPwd((String)map.get("pwd"));
 		return login;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
 	}
 }

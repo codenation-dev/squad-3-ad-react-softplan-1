@@ -12,4 +12,5 @@ public interface LoginRepository extends CrudRepository<Login, Long> {
     
     Login findByEmail(String email);
 
+    Login findByToken(String token);
 }

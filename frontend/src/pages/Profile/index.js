@@ -1,11 +1,26 @@
-import React from 'react';
+import React , { useEffect, useState } from 'react';
 import { Container } from './styles'
 import { Form, Input } from '@rocketseat/unform';
+import { getUser } from '../../services/api.js'
 
-export default function Profile() {
+export default function Profile(props) {
+  const [login, setLogin] = useState({});
+
+  useEffect(() => {
+    const token = localStorage.getItem("central-erros-auth-token");
+    console.log(token);
+    getUser(token, setLogin);
+    console.log(login.name);
+  },[]);
+  
+  const handleSair = () => {
+    localStorage.removeItem("central-erros-auth-token");
+    props.history.push("/");
+  }
+
   return <Container>
     <Form>
-      <Input name="name" placeholder="Nome completo"/>
+      <Input name="name" placeholder="Nome completo" />
       <Input name="email" type="email" placeholder="Seu endereço de email"/>
 
       <hr/>
@@ -16,6 +31,6 @@ export default function Profile() {
 
       <button type="submit">Atualizar perfil</button>
     </Form>
-      <button type="button">Fazer logout</button>
+      <button type="button" onClick={handleSair}>Fazer logout</button>
   </Container>
 }
