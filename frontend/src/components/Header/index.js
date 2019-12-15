@@ -8,6 +8,7 @@ export default function Header(props) {
       <Content>
         <nav>
           <Link to='/dashboard'>DASHBOARD</Link>
+          <p>&ensp;Você está logado com o token '{localStorage.getItem("central-erros-auth-token")}'</p>
         </nav>
         <aside>
           <Profile>
