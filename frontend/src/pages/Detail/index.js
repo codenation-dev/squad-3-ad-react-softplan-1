@@ -1,38 +1,27 @@
-import React from "react";
-import {useParams} from "react-router-dom";
-import api from '../../components/GridView/data.json';
+import React, {useEffect, useState} from "react";
+import {useParams } from "react-router-dom";
+import { getLog } from '../../services/api.js'
 import DetailItemText from '../../components/DetailItemText';
-import DetailItemColor from '../../components/DetailItemColor';
 import '../../bulma.min.css';
 
 const Detail = (props) => {
 
   const {id_log} = useParams();  
 
-  const voltarHandler = () => {
-      props.history.push('/dashboard')
-  } 
+  const [data, setData] = useState();
 
-  const itemLog = api.filter(el => el.id === parseInt(id_log))
+  const token = localStorage.getItem("central-erros-auth-token");
 
-  if (itemLog.length === 0){
-    props.history.push("/404")
-    return <></>
-  }
+  useEffect(() => {
+    getLog(props.history, token, id_log, setData)      
+  }, [])  
 
-  const data = itemLog[0]
-
+  if ((data !== undefined) && (data !== null))
   return (
-      <div>
-
-        <div>    
-          <button className="button is-link is-small" onClick={voltarHandler}>Voltar</button>
-          <DetailItemText   label={'Log ID ' + data.id}text={data.name}/>
-          <DetailItemColor   type={data.type}/> 
+      <div style={{padding: '1vw'}}>
+        <div style={{paddingBottom: '24px'}}>    
+          <DetailItemText   label={'Log ID ' + data.id} text={data.name} type={data.type}/>          
         </div>  
-
-
-
         <div className="columns">
           <div className="column">          
             <DetailItemText  label="Título" text={data.title}/>
@@ -46,6 +35,9 @@ const Detail = (props) => {
         </div>
       </div>
   )
+
+  return <p className="title has-text-white has-text-centered">Nenhum registro encontrado</p>;
+
 }
 
 export default Detail;
