@@ -1,32 +1,70 @@
 # Backend Central de Erros
 
-Article link : https://localhost:8080/central-erros-end/
 
-endpoints
+Login:
 
- - Login <URL/login>
-POST com JSON {"email":"xxxx@xxxx.com.br", "pwd":"abc@1223"}
-Exemplo:
-https://localhost:8080/login
-retorno um token
+	url: https://centralerros.herokuapp.com/login
+	método: POST
+	body: json	{"name":"zeca", "email":"zeca@gmail.com","pwd":"senha123"}
+	retorno: token
 
-- Cadastro de Login  <URL/savelogin/{token}>
-POST com JSON {"name":"xxxxx", "email":"xxxxx@xxxxx.com.br", "pwd":"abc@1223"}
-Exemplo:
-localhost:8080/savelogin/681f2ef541f14f1730664
+Cadastro de usuário 	
+	url: https://centralerros.herokuapp.com/savelogin/<token>
+	body: json	{"name":"novo_usuario", "email":"novo@gmail.com","pwd":"senha124"}
+	método: POST
+   
+Consulta todos usuário:
+	url: https://centralerros.herokuapp.com/logins/<token>
+	método: GET
+	retorno: json com todos os usuários
+	[
+    {
+        "id": 1,
+        "name": "cleverson",
+        "email": "cleverson@softplan.com.br",
+        "pwd": "123"
+    }
+	]
+	
+	exemplo:
+	https://centralerros.herokuapp.com/logins/8c595375991ad5b5f163
+	
+Consulta de logs:
 
-- Um Login <URL/findlogin/{token}&{email}>
-GET 
-Exemplo:
-http://localhost:8080/findlogin/681f2ef541f14f1730664&xxxxx@xxxxx.com.br
+	url: https://centralerros.herokuapp.com/logs/<token>
+	método: GET
+	retorno: json com os dados do log
+	[
+    {
+        "id": 2,
+        "name": "com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...",
+        "type": "INFO",
+        "orign": null,
+        "story": null,
+        "quantity": 1,
+        "createDate": null
+    },
+    ]
+    
+	exemplo:
+	https://centralerros.herokuapp.com/logs/8c595375991ad5b5f163
 
+Consulta detalhe do log:
 
-- Todos os Logins <URL/logins{token}>
-GET 
-Exemplo:
-http://localhost:8080/logins/681f2ef541f14f1730664
-
-- Todos os Logs <URL/logs{token}>
-GET 
-Exemplo:
-http://localhost:8080/logs/681f2ef541f14f1730664
+	url: https://centralerros.herokuapp.com/log/<id>/<token>
+	método: GET
+	retorno: json com o detalhe do log
+    {
+        "id": 1,
+        "name": "Erro no 127.0.0.1",
+        "createDate": "24/05/2019 10:15",
+        "type": "ERROR",
+        "title":"aceleration.Service.AddCanditate <forbidden>" 
+        "orign": "Token do usuário Elton",
+        "detail": "o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http). etc....",
+        "quantity": 1000
+    }
+    
+	exemplo:
+	https://centralerros.herokuapp.com/log/1/8c595375991ad5b5f163
+	

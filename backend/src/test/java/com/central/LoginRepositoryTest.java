@@ -28,7 +28,7 @@ public class LoginRepositoryTest {
     @Test
     public void testFindByName() {
 
-        entityManager.persist(new Login("cleverson", "cleverson@softplan.com.br", "123"));
+        entityManager.persist(new Login("cleverson", "cleverson@softplan.com.br", "123","1"));
 
         List<Login> users = repository.findByName("cleverson");
         assertEquals(1, users.size());
@@ -40,7 +40,7 @@ public class LoginRepositoryTest {
     @Test
     public void testFindByEmail() {
 
-        entityManager.persist(new Login("cleverson", "cleverson@softplan.com.br", "123"));
+        entityManager.persist(new Login("cleverson", "cleverson@softplan.com.br", "123","1"));
 
         Login login = repository.findByEmail("cleverson@softplan.com.br");
         assertEquals("cleverson", login.getName());      

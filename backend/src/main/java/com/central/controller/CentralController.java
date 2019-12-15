@@ -3,9 +3,10 @@ package com.central.controller;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.central.StartApplication;
 import com.central.bo.Log;
 import com.central.bo.Login;
 import com.central.error.CentralNotFoundException;
@@ -39,7 +41,6 @@ public class CentralController {
     @Autowired
     private LogRepository logRepo;
     
-    protected static ConcurrentHashMap<String, String> securityParams = new ConcurrentHashMap<>();
 	
     @RequestMapping(value = "login", method = RequestMethod.POST)	
 	@CrossOrigin(maxAge = 3600)
@@ -49,8 +50,10 @@ public class CentralController {
 		try {
 			Login login = Login.jsonToLogin(jsonSecurity);
 			LoginHelper service = new LoginHelper(3);
-			String token = service.sifra(login.getEmail()+login.getPwd());
-			securityParams.put(token, jsonSecurity);
+			String token = service.sifra(login.getEmail());
+			StartApplication.securityParams.put(token, jsonSecurity);
+	    	String detail = "login efetuado pelo "+login.getName();
+	    	geraLog("INFO", "login", login.getName(), detail);
 			writeResponse(response, token);
 		} catch (Exception e) {
 			throw new CentralNotFoundException("Não foi possível fazer o login");
@@ -59,46 +62,115 @@ public class CentralController {
     
     // FindAll logs
     @GetMapping("/logs/{token}")
+    @CrossOrigin(maxAge = 3600)
     public List<Log> findAllLogs(@PathVariable String token) {
-    	processaLogin(token);
+    	String orign = processaLogin(token);
+    	String detail = "busca de todos os logs da aplicação pelo token "+token;
+    	geraLog("INFO", "findAllLogs", orign.equals("")? token : orign, detail);
+
         return new ArrayList<Log>((Collection<? extends Log>) logRepo.findAll());
+    }
+
+	private void geraLog(String type, String title, String orign, String detail) {
+    	Long quantity = new Long(1);
+    	Calendar cal = Calendar.getInstance();
+    	java.sql.Date dataSql = new java.sql.Date(cal.getTime().getTime());
+    	Log log = new Log(title, type, orign, detail, quantity, dataSql);
+        logRepo.save(log);
+	}
+
+    // Arquiva log by ID
+    @GetMapping("/arquivalog/{id}/{token}")
+    @CrossOrigin(maxAge = 3600)
+    public void arquivalog(@PathVariable String token, @PathVariable Long id) {
+    	String orign = processaLogin(token);
+    	String detail = "arquiva log pelo id "+id;
+    	geraLog("INFO", "arquivalog", orign.equals("")? token : orign, detail);
+
+    	Optional<Log> logAux = logRepo.findById(id);
+    	Log log = logAux.get();
+    	log.setSituacao("A");
+    	logRepo.save(log);        
+    }
+
+    // Delete by ID
+    @GetMapping("/deletelog/{id}/{token}")
+    @CrossOrigin(maxAge = 3600)
+    public void deletelog(@PathVariable String token, @PathVariable Long id) {
+    	String orign = processaLogin(token);
+    	String detail = "exclui log pelo id "+id;
+    	geraLog("INFO", "deletelog", orign.equals("")? token : orign, detail);
+
+    	logRepo.deleteById(id);;
+    }
+
+    // Find by ID
+    @GetMapping("/log/{id}/{token}")
+    @CrossOrigin(maxAge = 3600)
+    public Log findlog(@PathVariable String token, @PathVariable Long id) {
+    	String orign = processaLogin(token);
+    	String detail = "busca pelo detalhe do log com id "+id;
+    	geraLog("INFO", "findlog", orign.equals("")? token : orign, detail);
+
+    	Optional<Log> log = logRepo.findById(id);
+        return log.get();
     }
 
     // FindAll logins
     @GetMapping("/logins/{token}")
+    @CrossOrigin(maxAge = 3600)
     public List<Login> findAllLogins(@PathVariable String token) {
-    	processaLogin(token);
-        return new ArrayList<Login>((Collection<? extends Login>) loginRepo.findAll());
+		String orign = processaLogin(token);
+    	String detail = "busca por todos os logins token "+token;
+    	geraLog("INFO", "findAllLogins", orign.equals("")? token : orign, detail);
+
+    	return new ArrayList<Login>((Collection<? extends Login>) loginRepo.findAll());
     }
     
     // Find
-    @GetMapping("/findlogin/{token}&{email}")
-    public Login findlogin(@PathVariable String token, @PathVariable String email) {
-    	processaLogin(token);
-    	Login login = loginRepo.findByEmail(email);
-    	if (login == null) {
-    		new CentralNotFoundException("Login não encontrado");
-    	} 
-        return login;
+    @GetMapping("/findlogin/{token}")
+    @CrossOrigin(maxAge = 3600)
+    public Login findlogin(@PathVariable String token) {
+		String orign = processaLogin(token);
+    	String detail = "busca pelas informações do login de token "+token;
+    	geraLog("INFO", "findlogin", orign.equals("")? token : orign, detail);
+    	String jsonSecurity = StartApplication.securityParams.get(token);
+    	return loginRepo.findByToken(token);
+//    	try {
+//    		
+//
+//			//return Login.jsonToLogin(jsonSecurity);
+//		} catch (IOException e) {
+//			geraLog("ERRO", "findlogin", orign.equals("")? token : orign, detail);
+//			throw new CentralNotFoundException("Login não encontrado");
+//		}
     }
 
-    @RequestMapping(value = "savelogin/{token}", method = RequestMethod.POST)	
+    @RequestMapping(value = "savelogin", method = RequestMethod.POST)	
 	@CrossOrigin(maxAge = 3600)
 	@ResponseBody
-	public Login savelogin(HttpServletRequest request, HttpServletResponse response, @PathVariable String token, @RequestBody String jsonSecurity) {
-    	processaLogin(token);
+	public Login savelogin(HttpServletRequest request, HttpServletResponse response, @RequestBody String jsonSecurity) {
 		System.out.println("savelogin");
 		try {
 	    	Login saveLogin = Login.jsonToLogin(jsonSecurity);
+	    	LoginHelper service = new LoginHelper(3);
+	    	String token = service.sifra(saveLogin.getEmail());
+	    	saveLogin.setToken(token);
 	    	Login login = loginRepo.findByEmail(saveLogin.getEmail());
 	    	if (login==null) {
-	    		return loginRepo.save(saveLogin);
+	        	String detail = "salva informações do novo usuário "+saveLogin.getName();
+	        	geraLog("INFO", "savelogin", saveLogin.getName(), detail);
+	        	return loginRepo.save(new Login(saveLogin.getName(), saveLogin.getEmail(), saveLogin.getPwd(),saveLogin.getToken()));
+	        	//return loginRepo.save();
 	    	} else {
+	        	String detail = "salva informações do usuário existente "+saveLogin.getName();
+	        	geraLog("INFO", "savelogin", saveLogin.getName(), detail);
 	    		return loginRepo.findById(login.getId())
 	                .map(x -> {
 	                    x.setName(saveLogin.getName());
 	                    x.setEmail(saveLogin.getEmail());
 	                    x.setPwd(saveLogin.getPwd());
+	                    x.setToken(saveLogin.getToken());
 	                    return loginRepo.save(x);
 	                })
 	                .orElseGet(() -> {
@@ -107,31 +179,38 @@ public class CentralController {
 	                });
 	    	}
 		} catch (IOException e) {
-			throw new CentralNotFoundException("Informações de Login inválidas");
+			throw new CentralNotFoundException("Informações de Login inválido");
 		}		
     }
 
-    @GetMapping("/deletelogin/{token}{email}")
+    @GetMapping("/deletelogin/{token}/{email}")
+    @CrossOrigin(maxAge = 3600)
     public void deleteLogin(@PathVariable String token, @PathVariable String email) {
     	processaLogin(token);
     	Login login = loginRepo.findByEmail(email);
     	if (login == null) {
-    		new CentralNotFoundException("Login não encontrado");
+    		throw new CentralNotFoundException("Login não encontrado");
     	} 
+    	String detail = "exclui usuário "+login.getName();
+    	geraLog("INFO", "deleteLogin", login.getName(), detail);
         loginRepo.deleteById(login.getId());
     }
     
     
-	private void processaLogin(String token) {
-		String jsonSecurity = securityParams.get(token);
-		if (jsonSecurity==null) {
-			throw new CentralNotFoundException("Usuário não logado, favor efetuar o login na central de erros");
-		}
-		try {
-			Login login = Login.jsonToLogin(jsonSecurity);
-		} catch (IOException e) {
-			throw new CentralNotFoundException("Informaçõess de Login inválido");
-		}
+	private String processaLogin(String token) {
+		return token;
+//		String jsonSecurity = StartApplication.securityParams.get(token);
+//		if (jsonSecurity==null) {
+//	    	String detail = "Usuário não logado, favor efetuar o login na central de erros";
+//	    	geraLog("ERROR", "processaLogin", token, detail);
+//			throw new CentralNotFoundException(detail);
+//		}
+//		try {
+//			Login login = Login.jsonToLogin(jsonSecurity);
+//			return login.getEmail();
+//		} catch (IOException e) {
+//			throw new CentralNotFoundException("Informações de Login inválido");
+//		}
 	}
 
     private void writeResponse(HttpServletResponse response, String html) throws IOException {

@@ -1,5 +1,10 @@
 package com.central;
 
+import java.sql.Date;
+import java.util.Calendar;
+import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +28,9 @@ public class StartApplication implements CommandLineRunner {
 	@Autowired
     private LogRepository logRepo;
 	
-    public static void main(String[] args) {
+   public static ConcurrentHashMap<String, String> securityParams = new ConcurrentHashMap<>();
+   
+   public static void main(String[] args) {
         SpringApplication.run(StartApplication.class, args);
     }
 
@@ -32,13 +39,21 @@ public class StartApplication implements CommandLineRunner {
 
         log.info("StartApplication...");
 
-        loginRepo.save(new Login("cleverson", "cleverson@softplan.com.br", "123"));
-        logRepo.save(new Log("com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...", "INFO", 1L));
-        logRepo.save(new Log("o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)", "INFO", 1L));
-        logRepo.save(new Log("INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'", "INFO", 1L));
-        logRepo.save(new Log("INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 14 ms", "INFO", 1L));
-        logRepo.save(new Log("com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Pool stats (total=5, active=0, idle=5, waiting=0)", "DEBUG", 1000L));
-
+        loginRepo.save(new Login("cleverson", "cleverson@softplan.com.br", "123","1"));
+        loginRepo.save(new Login("marcelo", "marcelo@hotmail.com", "123","2"));
+        loginRepo.save(new Login("jaquiel", "jaquiel.paim@gmail.com", "123","3"));
+        loginRepo.save(new Login("jerson", "jersonseling@yahoo.com.br", "123","4"));
+        Calendar cal = Calendar.getInstance();
+        for(int i=0; i<100;i++) {
+        	String title = "Log de inicialização da app";
+        	String type = getType();
+        	String orign = "Gerado pelo Sistema";
+        	String detail = "Detalhe do "+title+" gerado pelo "+ orign+" com na sequencia "+i;
+        	Long quantity = new Long(i);
+        	java.sql.Date dataSql = new java.sql.Date(cal.getTime().getTime());
+        	Log log = new Log(title, type, orign, detail, quantity, dataSql);
+            logRepo.save(log);
+        }
         System.out.println("\n Usuários findAll()");
         loginRepo.findAll().forEach(x -> System.out.println(x));
 
@@ -47,11 +62,28 @@ public class StartApplication implements CommandLineRunner {
 
         System.out.println("\nUsuário findByName('cleverson')");
         loginRepo.findByName("cleverson").forEach(x -> System.out.println(x));
-        
-        System.out.println("\nUsuário findByEmail('cleverson@softplan.com.br')");
+
+        System.out.println("\nUsuário findByEmail('cleverson')");
         Login login = loginRepo.findByEmail("cleverson@softplan.com.br");
         System.out.println(login);
-
     }
 
+	private String getType() {
+		String type;
+		Random gerador = new Random();
+		switch (gerador.nextInt(3)) {
+		  case 1:
+		    type = "WARNING";
+		    break;
+		  case 2:
+			  type = "DEBUG";
+		    break;
+		  case 3:
+			  type = "ERROR";
+		    break;
+		  default:
+			  type = "";
+		}
+		return type;
+	}
 }
