@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {useParams} from "react-router-dom";
 import DetailItemText from '../../components/DetailItemText';
-import DetailItemColor from '../../components/DetailItemColor';
 import '../../bulma.min.css';
 
 const Detail = (props) => {
@@ -40,17 +39,12 @@ const Detail = (props) => {
 
   //const data = itemLog[0]
 
+  if ((data !== undefined) && (data !== null))
   return (
-      <div>
-
-        <div>    
-          <button className="button is-link is-small" onClick={voltarHandler}>Voltar</button>
-          <DetailItemText   label={'Log ID ' + data.id}text={data.name}/>
-          <DetailItemColor   type={data.type}/> 
+      <div style={{padding: '1vw'}}>
+        <div style={{paddingBottom: '24px'}}>    
+          <DetailItemText   label={'Log ID ' + data.id} text={data.name} type={data.type}/>          
         </div>  
-
-
-
         <div className="columns">
           <div className="column">          
             <DetailItemText  label="Título" text={data.title}/>
@@ -65,6 +59,9 @@ const Detail = (props) => {
         </div>
       </div>
   )
+
+  return <p className="title has-text-white has-text-centered">Nenhum registro encontrado</p>;
+
 }
 
 export default Detail;

@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 import { Container, Log } from './styles'
 
 const Dashboard = (props) => {
-
    const [logs, setLogs] = useState([]);
 
    useEffect(() => {
