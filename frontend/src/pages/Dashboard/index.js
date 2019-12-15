@@ -27,15 +27,19 @@ const Dashboard = (props) => {
           console.log(error.message);
         });
     };
+
     const handleArquivar = () => {
 
     }
-    const handleArquivar = () => {
+
+    const handleDeletar = () => {
        
     }
+
     const handleAnterior = () => {
 
     }
+
     const handleProxima = () => {
        
     }
