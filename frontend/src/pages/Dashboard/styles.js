@@ -7,12 +7,26 @@ export const Container = styled.div`
   margin: 50px auto;
   display: flex;
   flex-direction: column;
-  header {
-    display: flex;
-    flex-direction: row;
-    align-self: center;
-    align-items: center;
+
+  @media screen and (min-width: 800px) {
+    header {
+      display: flex;
+      flex-direction: row;
+      align-self: center;
+      align-items: center;
+    }
   }
+  
+  @media screen and (max-width: 800px) {
+    header {
+      display: grid;
+      flex-direction: row;
+      grid-gap: 20px; 
+      align-self: center;
+      align-items: center;
+    }
+  }
+  
   select {
     width: 100%;
     height: 35px;
@@ -49,7 +63,7 @@ export const Container = styled.div`
   
   ul {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     grid-gap:15px;
     margin-top:30px;
     margin-bottom:30px;
