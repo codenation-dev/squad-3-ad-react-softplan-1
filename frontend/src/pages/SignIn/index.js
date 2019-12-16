@@ -1,12 +1,10 @@
-import React from "react";
-//import { useDispatch } from "react-redux";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Form, Input } from "@rocketseat/unform";
 import * as Yup from "yup";
 import { login } from '../../services/api.js'
+import { Mensagem } from './styles'
 
-//import { signInRequest } from "../../store/modules/auth/actions";
-// Sugestão para o signUp, copiar esse esquema e apenas adicionar o nome e a linha que vou deixar.
 const schema = Yup.object().shape({
   email: Yup.string()
     .email(`Insira um e-mail válido`)
@@ -16,10 +14,10 @@ const schema = Yup.object().shape({
 });
 
 export default function SignIn(props) {
-//  const dispatch = useDispatch();
+  const [mensagem, setMensagem] = useState("");
 
   function handleSubmit({ email, password }) {
-    login(props.history, email, password);
+    login(props.history, email, password, setMensagem);
   }
   return (
     <>
@@ -33,7 +31,11 @@ export default function SignIn(props) {
 
         <button type="submit">Acessar</button>
         <Link to="/register">Criar conta gratuita</Link>
+
       </Form>
+      <Mensagem>
+        <label>{mensagem}</label>
+      </Mensagem>
     </>
   );
 }

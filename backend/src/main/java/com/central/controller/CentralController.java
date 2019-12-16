@@ -25,6 +25,7 @@ import com.central.StartApplication;
 import com.central.bo.Log;
 import com.central.bo.LogPaginado;
 import com.central.bo.Login;
+import com.central.bo.LoginResultado;
 import com.central.error.CentralNotFoundException;
 import com.central.helper.LoginHelper;
 import com.central.repo.LogRepository;
@@ -46,19 +47,36 @@ public class CentralController {
     @RequestMapping(value = "login", method = RequestMethod.POST)	
 	@CrossOrigin(maxAge = 3600)
 	@ResponseBody
-	public void login(HttpServletRequest request, HttpServletResponse response, @RequestBody String jsonSecurity) {
+	public LoginResultado login(HttpServletRequest request, HttpServletResponse response, @RequestBody String jsonSecurity) {
 		System.out.println("login");
+		LoginResultado resultado = new LoginResultado();
+		resultado.setToken("");
 		try {
 			Login login = Login.jsonToLogin(jsonSecurity);
+			
+			Login loginBase = loginRepo.findByEmail(login.getEmail());
+			if (loginBase==null) {
+		    	geraLog("ERRO", "tentativa de login", login.getEmail(), "tentativa de login - email não cadastrado");
+				resultado.setStatus("Usuário não cadastrado");
+				return resultado;
+			}
+			if (!login.getPwd().equals(loginBase.getPwd())) {
+		    	geraLog("ERRO", "tentativa de login", login.getEmail(), "tentativa de login - senha incorreta");
+				resultado.setStatus("Senha incorreta");
+				return resultado;
+			}
 			LoginHelper service = new LoginHelper(3);
 			String token = service.sifra(login.getEmail());
 			StartApplication.securityParams.put(token, jsonSecurity);
 	    	String detail = "login efetuado pelo "+login.getName();
 	    	geraLog("INFO", "login", login.getName(), detail);
-			writeResponse(response, token);
+			resultado.setStatus("OK");
+	    	resultado.setToken(token);
 		} catch (Exception e) {
-			throw new CentralNotFoundException("Não foi possível fazer o login");
+	    	geraLog("ERRO", "login", "", "erro na api de login");
+			resultado.setStatus(e.getMessage());
 		}
+		return resultado;
 	}
     
     // FindAll logs

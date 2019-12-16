@@ -23,7 +23,7 @@ const getUser = async ( token, call) => {
   console.log(data);
 };
 
-const login = async ( history, email, pwd ) => {
+const login = async ( history, email, pwd, call ) => {
   const requestInfo = {
     method: "POST",
     body: JSON.stringify({ email: email, pwd: pwd }),
@@ -42,12 +42,21 @@ const login = async ( history, email, pwd ) => {
         throw new Error("não foi possível fazer o login");
       }
     })
-    .then(token => {
-      localStorage.setItem("central-erros-auth-token", token);
-      history.push("/dashboard");
+    .then(data => {
+      const json = JSON.parse(data);
+      if(json.status === "OK") {
+        localStorage.setItem("central-erros-auth-token", json.token);
+        history.push("/dashboard");
+      } else {
+        call(json.status);
+        console.log(json.status);
+        history.push("/");
+      }
     })
     .catch(error => {
-      alert(error.message);
+      console.log(error.message);
+      call( error.message);
+      history.push("/");
     });
 };
 
