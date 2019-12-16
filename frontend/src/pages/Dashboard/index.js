@@ -29,24 +29,29 @@ const Dashboard = (props) => {
       }).then(data => {
           const json = JSON.parse(data);
           setOrigLogs(json.logs);
-          if (filtro !== 'default' && ordenacao !== 'default') {
-            //setLogs(json.logs.filter(log => 
-            //  log.type === filtro
-            //));
+          let resultado = json.logs;
+          if (filtro !== 'default') {
+            resultado = json.logs.filter(log => 
+              log.type === filtro
+            );
+          }
+          if (ordenacao !== 'default') {
+            if (ordenacao === 'level') {
+              resultado = origLogs.sort( ( prev, next ) => prev.type  < next.type ? -1 : (prev.type > next.type ? 1 : 0));       
             } else {
-              setLogs(json.logs);
-            }    
+                resultado = origLogs.sort( ( prev, next ) => prev.quantity  < next.quantity ? -1 : (prev.quantity > next.quantity ? 1 : 0));
+            }
+          }
+          setLogs(resultado);
+          setBusca('default');
+          let input = document.querySelector("input[name='search']");   
+          input.value = "";
           setTotalPaginas(Math.ceil(json.total/10));
         })
         .catch(error => {
           console.log(error.message);
         });
     };
-
-    const resetLogs = () => {
-      const token = localStorage.getItem("central-erros-auth-token");
-      getLogs(token, paginaAtual);
-    }
 
     const handleChange = e => {
       switch (e.target.name) {
@@ -58,7 +63,7 @@ const Dashboard = (props) => {
                 )
             );
           } else {
-            resetLogs()
+            setLogs(origLogs);
           }
           setFiltro(e.target.value);
         break;
@@ -75,7 +80,7 @@ const Dashboard = (props) => {
                     )
                 }
             } else {
-              resetLogs()
+              setLogs(origLogs);
             }            
           setOrdenacao(e.target.value);
           break;
@@ -111,7 +116,9 @@ const Dashboard = (props) => {
             );              
           break;
         }
-      } else { resetLogs() }
+      } else { 
+        setLogs(origLogs);
+      }
 
     }
        
@@ -122,7 +129,7 @@ const Dashboard = (props) => {
       .then(function(response){
         return response.text();
       }).then(data => {
-          setLogs(logs.filter(el => el.id !== id));
+          console.log("arquivado com sucesso");
         })
         .catch(error => {
           console.log(error.message);

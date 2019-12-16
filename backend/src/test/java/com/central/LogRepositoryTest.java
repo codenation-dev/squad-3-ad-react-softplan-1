@@ -30,7 +30,7 @@ public class LogRepositoryTest {
     @Test
     public void testFindByName() {
 
-    	geraLog("TESTE", "TESTE DE LOG", "orign", "detail");
+    	//geraLog("TESTE", "TESTE DE LOG", "orign", "detail");
         List<Log> logs = repository.findByName("cleverson");
         assertEquals(1, logs.size());
 
