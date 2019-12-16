@@ -22,7 +22,6 @@ const Dashboard = (props) => {
    },[]);
  
    const getLogs = ( token, pagina) => {
-     //https://centralerrosapp.herokuapp.com
       fetch(`https://centralerrosapp.herokuapp.com/paglogs/${pagina}/${token}`)
       .then(function(response){
         return response.text();
