@@ -1,6 +1,7 @@
 import React , { useEffect, useState } from 'react';
 import { Input } from '@rocketseat/unform';
 import { Link } from "react-router-dom";
+import Modal from '../../components/Modal';
 
 import { Container, Log, ButtonApagar, ButtonArquivar, ContainerPaginacao } from './styles'
 import DetailItemColor from '../../components/DetailItemColor'
@@ -220,6 +221,7 @@ const Dashboard = (props) => {
                   <div className="right">
                     <ButtonArquivar type="button" onClick={() => handleArquivar(log.id)}>Arquivar</ButtonArquivar>
                     <ButtonApagar type="button" onClick={() => handleDeletar(log.id)}>Deletar</ButtonApagar>
+                    <Modal />
                   </div>
                   </Log>         
                   );
