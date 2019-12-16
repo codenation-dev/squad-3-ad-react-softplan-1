@@ -18,7 +18,6 @@ const Detail = (props) => {
      getLog(token);
    },[]);
 
-  //const itemLog = api.filter(el => el.id === parseInt(id_log))
   const getLog = ( token) => {
     fetch(`https://centralerrosapp.herokuapp.com/log/${id_log}/${token}`)
     .then(function(response){
@@ -36,8 +35,6 @@ const Detail = (props) => {
     props.history.push("/404")
     return <></>
   }
-
-  //const data = itemLog[0]
 
   if ((data !== undefined) && (data !== null))
   return (

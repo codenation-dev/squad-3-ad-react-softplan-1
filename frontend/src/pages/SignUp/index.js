@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-// import { Container } from './styles';
 import { register } from '../../services/api.js'
 import { Form, Input } from "@rocketseat/unform";
 import * as Yup from "yup";
