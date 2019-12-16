@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.central.StartApplication;
 import com.central.bo.Log;
+import com.central.bo.LogPaginado;
 import com.central.bo.Login;
 import com.central.error.CentralNotFoundException;
 import com.central.helper.LoginHelper;
@@ -71,7 +72,31 @@ public class CentralController {
         return new ArrayList<Log>((Collection<? extends Log>) logRepo.findAll());
     }
 
-	private void geraLog(String type, String title, String orign, String detail) {
+    // FindAll logs
+    @GetMapping("/paglogs/{pag}/{token}")
+    @CrossOrigin(maxAge = 3600)
+    public LogPaginado findAllLogs(@PathVariable int pag, @PathVariable String token) {
+    	int pagina = pag-1;
+    	LogPaginado logPaginado = new LogPaginado();
+
+        List<Log> arrayList = new ArrayList<Log>((Collection<? extends Log>) logRepo.findAll());
+        logPaginado.setTotal(arrayList.size());
+        List<Log> arrayListPaginado = new ArrayList<Log>();
+//        if (pagina*10>=arrayList.size()) {
+//        	logPaginado.setLogs(new ArrayList<Log>());
+//        }
+        for(int i=0;i<10;i++) {
+        	if (i+pagina*10>=arrayList.size()) {
+        		logPaginado.setLogs(arrayListPaginado);
+        		return logPaginado;
+        	}
+        	arrayListPaginado.add(arrayList.get(i+pagina*10));
+        }
+		logPaginado.setLogs(arrayListPaginado);
+		return logPaginado;
+    }
+
+    private void geraLog(String type, String title, String orign, String detail) {
     	Long quantity = new Long(1);
     	Calendar cal = Calendar.getInstance();
     	java.sql.Date dataSql = new java.sql.Date(cal.getTime().getTime());

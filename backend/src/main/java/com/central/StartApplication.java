@@ -44,7 +44,7 @@ public class StartApplication implements CommandLineRunner {
         loginRepo.save(new Login("jaquiel", "jaquiel.paim@gmail.com", "123","3"));
         loginRepo.save(new Login("jerson", "jersonseling@yahoo.com.br", "123","4"));
         Calendar cal = Calendar.getInstance();
-        for(int i=0; i<100;i++) {
+        for(int i=0; i<104;i++) {
         	String title = "Log de inicialização da app";
         	String type = getType();
         	String orign = "Gerado pelo Sistema";
@@ -71,7 +71,7 @@ public class StartApplication implements CommandLineRunner {
 	private String getType() {
 		String type;
 		Random gerador = new Random();
-		switch (gerador.nextInt(3)) {
+		switch (gerador.nextInt(4)) {
 		  case 1:
 		    type = "WARNING";
 		    break;
@@ -82,7 +82,7 @@ public class StartApplication implements CommandLineRunner {
 			  type = "ERROR";
 		    break;
 		  default:
-			  type = "";
+			  type = "INFO";
 		}
 		return type;
 	}
