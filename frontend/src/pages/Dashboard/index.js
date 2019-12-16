@@ -11,6 +11,8 @@ const Dashboard = (props) => {
    const [paginaAtual, setPaginaAtual] = useState(1);
    const [totalPaginas, setTotalPaginas] = useState(1);
    const [filtro, setFiltro] = useState("default");
+   const [ordenacao, setOrdenacao] = useState("default");   
+   const [busca, setBusca] = useState("default");
 
    useEffect(() => {
      const token = localStorage.getItem("central-erros-auth-token");
@@ -27,10 +29,10 @@ const Dashboard = (props) => {
       }).then(data => {
           const json = JSON.parse(data);
           setOrigLogs(json.logs);
-          if (filtro !== 'default') {
-            setLogs(json.logs.filter(log => 
-              log.type === filtro
-            ));
+          if (filtro !== 'default' && ordenacao !== 'default') {
+            //setLogs(json.logs.filter(log => 
+            //  log.type === filtro
+            //));
             } else {
               setLogs(json.logs);
             }    
@@ -40,6 +42,11 @@ const Dashboard = (props) => {
           console.log(error.message);
         });
     };
+
+    const resetLogs = () => {
+      const token = localStorage.getItem("central-erros-auth-token");
+      getLogs(token, paginaAtual);
+    }
 
     const handleChange = e => {
       switch (e.target.name) {
@@ -51,8 +58,7 @@ const Dashboard = (props) => {
                 )
             );
           } else {
-            const token = localStorage.getItem("central-erros-auth-token");
-            getLogs(token, paginaAtual);
+            resetLogs()
           }
           setFiltro(e.target.value);
         break;
@@ -61,19 +67,53 @@ const Dashboard = (props) => {
             if (e.target.value !== 'default') {
                 if (e.target.value === 'level') {
                     setLogs(
-                        origLogs.sort( ( prev, next ) => prev.type  > next.type ? -1 : (prev.type < next.type ? 1 : 0))       
+                        origLogs.sort( ( prev, next ) => prev.type  < next.type ? -1 : (prev.type > next.type ? 1 : 0))       
                     )
                 } else {
                     setLogs(
                         origLogs.sort( ( prev, next ) => prev.quantity  < next.quantity ? -1 : (prev.quantity > next.quantity ? 1 : 0))       
                     )
                 }
-            }
+            } else {
+              resetLogs()
+            }            
+          setOrdenacao(e.target.value);
           break;
           case 'search' :
-          break;
+            setBusca(e.target.value)
       }          
     };
+
+    const handleKeyUp = () => {
+      let input = document.querySelector("input[name='search']");   
+
+      if (input.value !== '') {
+        switch(busca) {
+          case 'level' :
+            setLogs(
+              origLogs.filter(log => 
+                log.type.toLowerCase().includes(input.value)
+              )
+            );              
+          break;
+          case 'level' :
+            setLogs(
+              origLogs.filter(log => 
+                log.type.toLowerCase().includes(input.value)
+              )
+            );              
+          break;
+          case 'name' :
+            setLogs(
+              origLogs.filter(log => 
+                log.name.toLowerCase().includes(input.value)
+              )
+            );              
+          break;
+        }
+      } else { resetLogs() }
+
+    }
        
     const handleArquivar = (id) => {
       const token = localStorage.getItem("central-erros-auth-token");
@@ -134,15 +174,14 @@ const Dashboard = (props) => {
          <select name="order" onChange={handleChange}>
             <option value="default" selected>Ordenar por</option>
             <option value="level">Level</option>
-            <option value="quantity">Frequencia</option>
+            <option value="quantity">Eventos</option>
          </select>
          <select name="search" onChange={handleChange}>
             <option value="default" selected>Buscar por</option>
             <option value="level">Level</option>
             <option value="name">Descrição</option>
-            <option value="origin">Origem</option>
          </select>
-         <Input name="name" placeholder="Pesquisar aqui"></Input>
+         <Input name="search" placeholder="Pesquisar aqui" onKeyUp={handleKeyUp}></Input>
       </header>
          <ul>
          {        
