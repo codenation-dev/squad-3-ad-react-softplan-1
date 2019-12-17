@@ -132,7 +132,6 @@ const Dashboard = (props) => {
         return response.text();
       }).then(data => {
           console.log("arquivado com sucesso");
-          setLogs(logs.filter(el => el.id !== id));
         })
         .catch(error => {
           console.log(error.message);
