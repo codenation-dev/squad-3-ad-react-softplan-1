@@ -10,6 +10,7 @@
     "eslint": "^6.7.2",
     "history": "^4.10.1",
     "immer": "^5.0.1",
+    "modali": "^1.2.0",
     "mui-datatables": "^2.13.3",
     "polished": "^3.4.2",
     "prop-types": "^15.7.2",
