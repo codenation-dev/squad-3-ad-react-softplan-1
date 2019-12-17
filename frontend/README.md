@@ -1,5 +1,6 @@
 - [Quadro Trello](https://trello.com/b/SkF8l5BQ/codenationreactsquad3)
 - [Codigo backend novo repositório](https://github.com/cpohlod/centralerros)
+- [Apresentação PPT](https://docs.google.com/presentation/d/1P6448fwrGtic5TU915HEDbCOm7dQgj0ThTnNk8Cq8nY/edit?ts=5df52582#slide=id.p)
 
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
