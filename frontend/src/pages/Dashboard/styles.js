@@ -35,15 +35,18 @@ export const Container = styled.div`
     padding-left: 5px;
     font-size: 14px;
     border: none;
+    border-radius: 4px;
     margin-left: 10px;
 
     option {
       color: black;
       background: white;
       display: flex;
+      border-radius: 4px;
       white-space: pre;
       min-height: 20px;
       padding: 0px 2px 1px;
+      font-family:Arial, Helvetica, sans-serif;
     }
   }
 
@@ -61,13 +64,19 @@ export const Container = styled.div`
     }
   }
   
-  ul {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    grid-gap:15px;
-    margin-top:30px;
-    margin-bottom:30px;
-  }
+    ul {
+      display: grid;
+      @media screen and (min-width: 800px) {
+        grid-template-columns: auto auto;
+      }
+      @media screen and (max-width: 800px) {
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      }
+      grid-gap:15px;
+      margin-top:30px;
+      margin-bottom:30px;
+    }
+
 `;
 
 export const Log = styled.li`

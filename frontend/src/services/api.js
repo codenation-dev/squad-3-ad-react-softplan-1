@@ -67,20 +67,7 @@ const getLogs = async ({ token }) => {
     console.log(response.status);
     return response.data; 
   });
-  //console.log(token);
-  //let response = await fetch(`https://api.github.com/users/jaquiel`);
-  //let data = await response.json()
-  //console.log(data);
   return data;
-};
-
-const getLog = async (history, token, id_log, setData) => {
-  const tokenJaquiel = '834463a1513858d7b2d2db1ecb99307045712fbd9474dfd78cf78b29db00e90b';
-  const response = await API.get(`/log/${id_log}/${tokenJaquiel}`);
-  const data = response.data;
-  // const response = await fetch(`https://centralerros.herokuapp.com/log/${id_log}/${tokenJaquiel}`);
-  // const data = await response.json();
-  setData(data);
 };
 
 const register = async (history, name, email, pwd) => {
@@ -104,14 +91,11 @@ const register = async (history, name, email, pwd) => {
       }
     })
     .then(token => {
-      //browserHistory.push('/');
-      //console.log(history)
       history.push("/");
     })
     .catch(error => {
-      //console.log(error.message);
       alert(error.message);
     });
 };
 
-export { login, getUser, getUsers, getLogs, getLog, register };
+export { login, getUser, getUsers, getLogs, register };
